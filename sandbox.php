@@ -2,7 +2,11 @@
 
 require 'vendor/autoload.php';
 
-$method = new CG_Method('bar');
+$method = new CG_Method('_bar');
+$method->setVisibility('private');
+$method->addParameter(new CG_Parameter('foo'));
+$method->addParameter(new CG_Parameter('bar'));
+$method->addParameter(new CG_Parameter('zoo'));
 
 $property = new CG_Property('foo');
 $property->setDefaultValue('foo');

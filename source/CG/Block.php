@@ -10,6 +10,10 @@ abstract class CG_Block {
 	 */
 	abstract public function dump();
 
+	public function __toString() {
+		return $this->dump();
+	}
+
 	/**
 	 * @param string $content
 	 * @return string
