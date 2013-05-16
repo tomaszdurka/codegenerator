@@ -20,6 +20,13 @@ class CG_Property extends CG_Block {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->_name;
+	}
+
+	/**
 	 * @param string $visibility
 	 */
 	public function setVisibility($visibility) {
@@ -40,5 +47,21 @@ class CG_Property extends CG_Block {
 		}
 		$content .= ';';
 		return $content;
+	}
+
+	/**
+	 * @param ReflectionProperty $reflection
+	 * @return CG_Property
+	 */
+	public static function buildFromReflection(ReflectionProperty $reflection) {
+		$property = new self($reflection->getName());
+		if ($reflection->isProtected()) {
+			$property->setVisibility('protected');
+		}
+		if ($reflection->isPrivate()) {
+			$property->setVisibility('private');
+		}
+		//$property->setDefaultValue($reflection->getValue());
+		return $property;
 	}
 }

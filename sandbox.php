@@ -27,4 +27,8 @@ $file->addBlock($class);
 $childClass = new CG_Class('Bar', 'Foo');
 $file->addBlock($childClass);
 
+$reflectionClass = new ReflectionClass('CG_File');
+$reflectedClass = CG_Class::buildFromReflection($reflectionClass);
+$file->addBlock($reflectedClass);
+
 echo $file->dump();

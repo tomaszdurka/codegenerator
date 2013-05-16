@@ -28,6 +28,13 @@ class CG_Function extends CG_Block {
 	}
 
 	/**
+	 * @return string|null
+	 */
+	public function getName() {
+		return $this->_name;
+	}
+
+	/**
 	 * @param CG_Parameter $parameter
 	 * @throws Exception
 	 */
@@ -56,7 +63,7 @@ class CG_Function extends CG_Block {
 	/**
 	 * @param ReflectionFunction $reflection
 	 */
-	protected function _setBodyFromReflection(ReflectionFunction $reflection) {
+	protected function _setBodyFromReflection(ReflectionFunctionAbstract $reflection) {
 		$file = new SplFileObject($reflection->getFileName());
 		$file->seek($reflection->getStartLine() - 1);
 
@@ -80,7 +87,7 @@ class CG_Function extends CG_Block {
 	/**
 	 * @param ReflectionFunction $reflection
 	 */
-	protected function _setParametersFromReflection(ReflectionFunction $reflection) {
+	protected function _setParametersFromReflection(ReflectionFunctionAbstract $reflection) {
 		foreach ($reflection->getParameters() as $reflectionParameter) {
 			$parameter = CG_Parameter::buildFromReflection($reflectionParameter);
 			$this->addParameter($parameter);
@@ -119,7 +126,7 @@ class CG_Function extends CG_Block {
 	 * @param ReflectionFunction $reflection
 	 * @return CG_Function
 	 */
-	public function extractFromReflection(ReflectionFunction $reflection) {
+	public function extractFromReflection(ReflectionFunctionAbstract $reflection) {
 		$this->_setBodyFromReflection($reflection);
 		$this->_setParametersFromReflection($reflection);
 	}

@@ -24,26 +24,40 @@ class CG_Class extends CG_Block {
 	 */
 	public function __construct($name, $parentClassName = null, array $interfaces = null) {
 		$this->_name = (string) $name;
-		if ($parentClassName) {
-			$this->_parentClassName = (string) $parentClassName;
+		if (null !== $parentClassName) {
+			$this->setParentClassName($parentClassName);
 		}
-		if ($interfaces) {
-			$this->_interfaces = $interfaces;
+		if (null !== $interfaces) {
+			$this->setInterfaces($interfaces);
 		}
+	}
+
+	/**
+	 * @param string $parentClassName
+	 */
+	public function setParentClassName($parentClassName) {
+		$this->_parentClassName = (string) $parentClassName;
+	}
+
+	/**
+	 * @param string[] $interfaces
+	 */
+	public function setInterfaces(array $interfaces) {
+		$this->_interfaces = $interfaces;
 	}
 
 	/**
 	 * @param CG_Method $method
 	 */
 	public function addMethod(CG_Method $method) {
-		$this->_methods[] = $method;
+		$this->_methods[$method->getName()] = $method;
 	}
 
 	/**
 	 * @param CG_Property $property
 	 */
 	public function addProperty(CG_Property $property) {
-		$this->_properties[] = $property;
+		$this->_properties[$property->getName()] = $property;
 	}
 
 	/**
@@ -84,5 +98,26 @@ class CG_Class extends CG_Block {
 	 */
 	private function _dumpFooter() {
 		return '}';
+	}
+
+	public static function buildFromReflection(ReflectionClass $reflection) {
+		$class = new self($reflection->getName());
+		if ($reflection->getParentClass()) {
+			$class->setParentClassName($reflection->getParentClass()->getName());
+		}
+		$class->setInterfaces($reflection->getInterfaceNames());
+		foreach ($reflection->getMethods() as $reflectionMethod) {
+			if ($reflectionMethod->getDeclaringClass() == $reflection) {
+				$method = CG_Method::buildFromReflection($reflectionMethod);
+				$class->addMethod($method);
+			}
+		}
+		foreach ($reflection->getProperties() as $reflectionProperty) {
+			if ($reflectionProperty->getDeclaringClass() == $reflection) {
+				$property = CG_Property::buildFromReflection($reflectionProperty);
+				$class->addProperty($property);
+			}
+		}
+		return $class;
 	}
 }

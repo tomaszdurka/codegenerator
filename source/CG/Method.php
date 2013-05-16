@@ -37,4 +37,14 @@ class CG_Method extends CG_Function {
 		$code .= ' ' . parent::_dumpHeader();
 		return $code;
 	}
+
+	/**
+	 * @param ReflectionMethod $reflection
+	 * @return self
+	 */
+	public static function buildFromReflection(ReflectionMethod	$reflection) {
+		$method = new self($reflection->getName());
+		$method->extractFromReflection($reflection);
+		return $method;
+	}
 }

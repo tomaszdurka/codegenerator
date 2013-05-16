@@ -77,6 +77,11 @@ class CG_Parameter extends CG_Block {
 		if ($reflection->getClass()) {
 			$type = $reflection->getClass()->getName();
 		}
-		return new self($reflection->getName(), $type, $reflection->isOptional(), $reflection->getDefaultValue());
+		$defaultValue = null;
+		if ($reflection->isOptional()) {
+			$defaultValue = $reflection->getDefaultValue();
+		}
+
+		return new self($reflection->getName(), $type, $reflection->isOptional(), $defaultValue);
 	}
 }
