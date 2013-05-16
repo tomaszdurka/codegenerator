@@ -1,22 +1,21 @@
 <?php
 
-class CG_Method extends CG_Block {
-
-	/** @var string */
-	private $_name;
+class CG_Method extends CG_Function {
 
 	/** @var string */
 	private $_visibility;
 
-	/** @var CG_Parameter[] */
-	private $_parameters = array();
+	/** @var boolean */
+	private $_static;
 
 	/**
-	 * @param $name
+	 * @param string $name
+	 * @param callable $closure
 	 */
-	public function __construct($name) {
-		$this->_name = (string) $name;
+	public function __construct($name, Closure $closure = null) {
+		$this->setName($name);
 		$this->setVisibility('public');
+		parent::__construct($closure);
 	}
 
 	/**
@@ -26,37 +25,16 @@ class CG_Method extends CG_Block {
 		$this->_visibility = (string) $visibility;
 	}
 
-	public function dump() {
-		return $this->_dumpLine(
-			$this->_dumpHeader(),
-			$this->_indent($this->_dumpBody()),
-			$this->_dumpFooter()
-		);
+	public function setStatic($static) {
+		$this->_static = (bool) $static;
 	}
 
-	/**
-	 * @param CG_Parameter $parameter
-	 * @throws Exception
-	 */
-	public function addParameter(CG_Parameter $parameter) {
-		if (array_key_exists($parameter->getName(), $this->_parameters)) {
-			throw new Exception('Paremter `' . $parameter->getName() . '` is already set.');
+	protected function _dumpHeader() {
+		$code = $this->_visibility;
+		if ($this->_static) {
+			$code .= ' static';
 		}
-		$this->_parameters[$parameter->getName()] = $parameter;
-	}
-
-	private function _dumpHeader() {
-		$content = $this->_visibility . ' function ' . $this->_name . '(';
-		$content .= implode(', ', $this->_parameters);
-		$content .= ') {';
-		return $content;
-	}
-
-	private function _dumpFooter() {
-		return '}';
-	}
-
-	private function _dumpBody() {
-		return '// To be implemented';
+		$code .= ' ' . parent::_dumpHeader();
+		return $code;
 	}
 }

@@ -1,6 +1,14 @@
 <?php
-
 require 'vendor/autoload.php';
+
+$file = new CG_File();
+
+
+$function = new CG_Function(function($bar = null) {
+	return 'foo';
+});
+$file->addBlock($function);
+
 
 $method = new CG_Method('_bar');
 $method->setVisibility('private');
@@ -14,8 +22,9 @@ $property->setDefaultValue('foo');
 $class = new CG_Class('Foo');
 $class->addMethod($method);
 $class->addProperty($property);
-
-$file = new CG_File();
 $file->addBlock($class);
+
+$childClass = new CG_Class('Bar', 'Foo');
+$file->addBlock($childClass);
 
 echo $file->dump();
