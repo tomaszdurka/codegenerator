@@ -1,0 +1,17 @@
+{
+    "name": "tomaszdurka/codegenerator",
+    "authors": [
+        {
+            "name": "Tomasz Durka",
+            "email": "tomasz@durka.pl"
+        }
+    ],
+    "require": {
+
+    },
+	"autoload": {
+		"psr-0": {
+			"CG_": "source/"
+		}
+	}
+}
