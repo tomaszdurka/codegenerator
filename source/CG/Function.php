@@ -61,7 +61,7 @@ class CG_Function extends CG_Block {
 	}
 
 	/**
-	 * @param ReflectionFunction $reflection
+	 * @param ReflectionFunctionAbstract $reflection
 	 */
 	protected function _setBodyFromReflection(ReflectionFunctionAbstract $reflection) {
 		$file = new SplFileObject($reflection->getFileName());
@@ -85,7 +85,7 @@ class CG_Function extends CG_Block {
 	}
 
 	/**
-	 * @param ReflectionFunction $reflection
+	 * @param ReflectionFunctionAbstract $reflection
 	 */
 	protected function _setParametersFromReflection(ReflectionFunctionAbstract $reflection) {
 		foreach ($reflection->getParameters() as $reflectionParameter) {
@@ -123,7 +123,7 @@ class CG_Function extends CG_Block {
 	}
 
 	/**
-	 * @param ReflectionFunction $reflection
+	 * @param ReflectionFunctionAbstract $reflection
 	 * @return CG_Function
 	 */
 	public function extractFromReflection(ReflectionFunctionAbstract $reflection) {
