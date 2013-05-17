@@ -2,7 +2,7 @@
 
 abstract class CG_Block {
 
-	/** @var string  */
+	/** @var string */
 	protected $_indentation = '	';
 
 	/**
@@ -23,6 +23,32 @@ abstract class CG_Block {
 	}
 
 	/**
+	 * @param string       $content
+	 * @param boolean|null $untilUnsafe
+	 * @return string
+	 */
+	protected function _outdent($content, $untilUnsafe = null) {
+		$indentation = $this->_indentation;
+		$lines = explode(PHP_EOL, $content);
+		if ($untilUnsafe) {
+			$unsafeLines = array_filter($lines, function($line) use ($indentation) {
+				return strpos($line, $indentation) !== 0 && strlen(trim($line)) !== 0;
+			});
+			if (count($unsafeLines)) {
+				return $content;
+			}
+		}
+		foreach ($lines as $key => $line) {
+			$lines[$key] = preg_replace('/^' . preg_quote($this->_indentation) .  '/', '$1', $line);
+		}
+		$content = implode(PHP_EOL, $lines);
+		if ($untilUnsafe) {
+			$this->_outdent($content, $untilUnsafe);
+		}
+		return $content;
+	}
+
+	/**
 	 * @param string $line, $line, $line
 	 * @return string
 	 */
@@ -36,6 +62,8 @@ abstract class CG_Block {
 	 * @return string
 	 */
 	protected function _dumpLines(array $lines) {
-		return implode(PHP_EOL, $lines);
+		return implode(PHP_EOL, array_filter($lines, function ($element) {
+			return !is_null($element);
+		}));
 	}
 }

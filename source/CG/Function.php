@@ -11,6 +11,9 @@ class CG_Function extends CG_Block {
 	/** @var string */
 	protected $_code;
 
+	/** @var string */
+	protected $_docBlock;
+
 	/**
 	 * @param callable $closure
 	 */
@@ -49,11 +52,19 @@ class CG_Function extends CG_Block {
 	 * @param string $code
 	 */
 	public function setCode($code) {
-		$this->_code = (string) $code;
+		$this->_code = $this->_outdent((string) $code, true);
+	}
+
+	/**
+	 * @param string $docBlock
+	 */
+	public function setDocBlock($docBlock) {
+		$this->_docBlock = (string) $docBlock;
 	}
 
 	public function dump() {
 		return $this->_dumpLine(
+			$this->_dumpDocBlock(),
 			$this->_dumpHeader(),
 			$this->_dumpBody(),
 			$this->_dumpFooter()
@@ -79,7 +90,8 @@ class CG_Function extends CG_Block {
 		$begin = strpos($code, '{');
 		$end = strrpos($code, '}');
 		$code = substr($code, $begin + 1, $end - $begin - 1);
-		$code = trim($code, PHP_EOL);
+		$code = preg_replace('/^\s*[\r\n]+/', '', $code);
+		$code = preg_replace('/[\r\n]+\s*$/', '', $code);
 
 		$this->setCode($code);
 	}
@@ -94,6 +106,21 @@ class CG_Function extends CG_Block {
 		}
 	}
 
+	protected function _setDocBlockFromReflection(ReflectionFunctionAbstract $reflection) {
+		$docBlock = $reflection->getDocComment();
+		if ($docBlock) {
+			$docBlock = preg_replace('/([\n\r])\t+/', '$1', $docBlock);
+			$this->setDocBlock($docBlock);
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function _dumpDocBlock() {
+		return $this->_docBlock;
+	}
+
 	/**
 	 * @return string
 	 */
@@ -102,7 +129,7 @@ class CG_Function extends CG_Block {
 		if ($this->_name) {
 			$content .= ' ' . $this->_name;
 		}
-		$content .= ' (';
+		$content .= '(';
 		$content .= implode(', ', $this->_parameters);
 		$content .= ') {';
 		return $content;
@@ -129,6 +156,7 @@ class CG_Function extends CG_Block {
 	public function extractFromReflection(ReflectionFunctionAbstract $reflection) {
 		$this->_setBodyFromReflection($reflection);
 		$this->_setParametersFromReflection($reflection);
+		$this->_setDocBlockFromReflection($reflection);
 	}
 
 	/**
