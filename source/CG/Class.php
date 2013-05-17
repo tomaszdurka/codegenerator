@@ -11,11 +11,14 @@ class CG_Class extends CG_Block {
 	/** @var string[] */
 	private $_interfaces;
 
-	/** @var CG_Method[] */
-	private $_methods = array();
+	/** @var CG_Constant[] */
+	private $_constants = array();
 
 	/** @var CG_Property[] */
 	private $_properties = array();
+
+	/** @var CG_Method[] */
+	private $_methods = array();
 
 	/**
 	 * @param string        $name
@@ -47,10 +50,10 @@ class CG_Class extends CG_Block {
 	}
 
 	/**
-	 * @param CG_Method $method
+	 * @param CG_Constant $constant
 	 */
-	public function addMethod(CG_Method $method) {
-		$this->_methods[$method->getName()] = $method;
+	public function addConstant(CG_Constant $constant) {
+		$this->_constants[$constant->getName()] = $constant;
 	}
 
 	/**
@@ -61,11 +64,22 @@ class CG_Class extends CG_Block {
 	}
 
 	/**
+	 * @param CG_Method $method
+	 */
+	public function addMethod(CG_Method $method) {
+		$this->_methods[$method->getName()] = $method;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function dump() {
 		$lines = array();
 		$lines[] = $this->_dumpHeader();
+		foreach ($this->_constants as $constant) {
+			$lines[] = '';
+			$lines[] = $this->_indent($constant->dump());
+		}
 		foreach ($this->_properties as $property) {
 			$lines[] = '';
 			$lines[] = $this->_indent($property->dump());

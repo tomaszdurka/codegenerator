@@ -19,9 +19,12 @@ $method->addParameter(new CG_Parameter('zoo'));
 $property = new CG_Property('foo');
 $property->setDefaultValue('foo');
 
+$constant = new CG_Constant('FOO', 1);
+
 $class = new CG_Class('Foo');
 $class->addMethod($method);
 $class->addProperty($property);
+$class->addConstant($constant);
 $file->addBlock($class);
 
 $childClass = new CG_Class('Bar', 'Foo');
