@@ -132,6 +132,11 @@ class CG_Class extends CG_Block {
 				$class->addProperty($property);
 			}
 		}
+		foreach ($reflection->getConstants() as $name => $value) {
+			if (!$reflection->getParentClass()->hasConstant($name)) {
+				$class->addConstant(new CG_Constant($name, $value));
+			}
+		}
 		return $class;
 	}
 }
