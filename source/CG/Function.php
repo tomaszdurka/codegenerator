@@ -75,6 +75,11 @@ class CG_Function extends CG_Block {
 	 * @param ReflectionFunctionAbstract $reflection
 	 */
 	protected function _setBodyFromReflection(ReflectionFunctionAbstract $reflection) {
+		/** @var $reflection ReflectionMethod */
+		if (is_a($reflection, 'ReflectionMethod') && $reflection->isAbstract()) {
+			$this->_code = null;
+			return;
+		}
 		$file = new SplFileObject($reflection->getFileName());
 		$file->seek($reflection->getStartLine() - 1);
 

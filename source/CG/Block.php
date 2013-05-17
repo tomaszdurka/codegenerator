@@ -31,10 +31,13 @@ abstract class CG_Block {
 		$indentation = $this->_indentation;
 		$lines = explode(PHP_EOL, $content);
 		if ($untilUnsafe) {
-			$unsafeLines = array_filter($lines, function($line) use ($indentation) {
-				return strpos($line, $indentation) !== 0 && strlen(trim($line)) !== 0;
+			$nonemptyLines = array_filter($lines, function($line) {
+				return (bool) trim($line);
 			});
-			if (count($unsafeLines)) {
+			$unsafeLines = array_filter($nonemptyLines, function($line) use ($indentation) {
+				return strpos($line, $indentation) !== 0;
+			});
+			if (count($unsafeLines) || !count($nonemptyLines)) {
 				return $content;
 			}
 		}
