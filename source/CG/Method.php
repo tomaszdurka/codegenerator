@@ -10,12 +10,12 @@ class CG_Method extends CG_Function {
 
 	/**
 	 * @param string $name
-	 * @param callable $closure
+	 * @param callable|string|null $body
 	 */
-	public function __construct($name, Closure $closure = null) {
+	public function __construct($name, $body = null) {
 		$this->setName($name);
 		$this->setVisibility('public');
-		parent::__construct($closure);
+		parent::__construct($body);
 	}
 
 	/**

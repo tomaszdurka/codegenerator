@@ -4,9 +4,12 @@ require 'vendor/autoload.php';
 $file = new CG_File();
 
 
-$function = new CG_Function(function($bar = null) {
+$closureFunction = new CG_Function(function($bar = null) {
 	return 'foo';
 });
+$file->addBlock($closureFunction);
+
+$function = new CG_Function('return true;');
 $file->addBlock($function);
 
 

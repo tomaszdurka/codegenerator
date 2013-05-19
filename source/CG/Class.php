@@ -36,6 +36,13 @@ class CG_Class extends CG_Block {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getName() {
+		return $this->_name;
+	}
+
+	/**
 	 * @param string $parentClassName
 	 */
 	public function setParentClassName($parentClassName) {

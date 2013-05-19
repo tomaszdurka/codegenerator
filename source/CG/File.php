@@ -14,7 +14,7 @@ class CG_File extends CG_Block {
 
 	public function dump() {
 		$lines = array();
-		$lines[] = '<?';
+		$lines[] = '<?php';
 		foreach ($this->_blocks as $block) {
 			$lines[] = '';
 			$lines[] = $block->dump();

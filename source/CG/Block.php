@@ -46,7 +46,7 @@ abstract class CG_Block {
 		}
 		$content = implode(PHP_EOL, $lines);
 		if ($untilUnsafe) {
-			$this->_outdent($content, $untilUnsafe);
+			$content = $this->_outdent($content, $untilUnsafe);
 		}
 		return $content;
 	}

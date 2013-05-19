@@ -15,11 +15,15 @@ class CG_Function extends CG_Block {
 	protected $_docBlock;
 
 	/**
-	 * @param callable $closure
+	 * @param callable|string|null $body
 	 */
-	public function __construct(Closure $closure = null) {
-		if (null !== $closure) {
-			$this->extractFromClosure($closure);
+	public function __construct($body = null) {
+		if (null !== $body) {
+			if ($body instanceof Closure) {
+				$this->extractFromClosure($body);
+			} else {
+				$this->setCode($body);
+			}
 		}
 	}
 
@@ -66,7 +70,7 @@ class CG_Function extends CG_Block {
 		return $this->_dumpLine(
 			$this->_dumpDocBlock(),
 			$this->_dumpHeader(),
-			$this->_dumpBody(),
+			$this->_indent($this->_dumpBody()),
 			$this->_dumpFooter()
 		);
 	}
