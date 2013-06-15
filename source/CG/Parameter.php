@@ -62,7 +62,8 @@ class CG_Parameter extends CG_Block {
 		if (null === $this->_defaultValue) {
 			return 'null';
 		}
-		return str_replace(PHP_EOL, '', var_export($this->_defaultValue, true));
+		$value = new CG_Value($this->_defaultValue);
+		return $value->dump();
 	}
 
 	/**
