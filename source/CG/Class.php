@@ -146,13 +146,16 @@ class CG_Class extends CG_Block {
 
 	public static function buildFromReflection(ReflectionClass $reflection) {
 		$class = new self($reflection->getName());
-		if ($reflection->getParentClass()) {
-			$class->setParentClassName($reflection->getParentClass()->getName());
+		$reflectionParentClass = $reflection->getParentClass();
+		if ($reflectionParentClass) {
+			$class->setParentClassName($reflectionParentClass->getName());
 		}
 		$class->setAbstract($reflection->isAbstract());
 		if ($interfaces = $reflection->getInterfaceNames()) {
-			$parentInterfaces = $reflection->getParentClass()->getInterfaceNames();
-			$interfaces = array_diff($interfaces, $parentInterfaces);
+			if ($reflectionParentClass) {
+				$parentInterfaces = $reflection->getParentClass()->getInterfaceNames();
+				$interfaces = array_diff($interfaces, $parentInterfaces);
+			}
 			$class->setInterfaces($interfaces);
 		}
 		foreach ($reflection->getMethods() as $reflectionMethod) {
