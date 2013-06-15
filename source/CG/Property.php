@@ -11,6 +11,9 @@ class CG_Property extends CG_Block {
 	/** @var mixed */
 	private $_defaultValue;
 
+	/** @var string */
+	protected $_docBlock;
+
 	/**
 	 * @param string $name
 	 */
@@ -40,7 +43,39 @@ class CG_Property extends CG_Block {
 		$this->_defaultValue = $value;
 	}
 
+	/**
+	 * @param string $docBlock
+	 */
+	public function setDocBlock($docBlock) {
+		$this->_docBlock = (string) $docBlock;
+	}
+
 	public function dump() {
+		return $this->_dumpLine(
+			$this->_dumpDocBlock(),
+			$this->_dumpValue()
+		);
+	}
+
+	/**
+	 * @param ReflectionProperty $reflection
+	 */
+	public function extractFromReflection(ReflectionProperty $reflection) {
+		$this->_setVisibilityFromReflection($reflection);
+		$this->_setDocBlockFromReflection($reflection);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function _dumpDocBlock() {
+		return $this->_docBlock;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function _dumpValue() {
 		$content = $this->_visibility . ' $' . $this->_name;
 		if (null !== $this->_defaultValue) {
 			$content .= ' = ' . var_export($this->_defaultValue, true);
@@ -51,16 +86,34 @@ class CG_Property extends CG_Block {
 
 	/**
 	 * @param ReflectionProperty $reflection
+	 */
+	protected function _setVisibilityFromReflection(ReflectionProperty $reflection) {
+		if ($reflection->isPublic()) {
+			$this->setVisibility('public');
+		}
+		if ($reflection->isProtected()) {
+			$this->setVisibility('protected');
+		}
+		if ($reflection->isPrivate()) {
+			$this->setVisibility('private');
+		}
+	}
+
+	protected function _setDocBlockFromReflection(ReflectionProperty $reflection) {
+		$docBlock = $reflection->getDocComment();
+		if ($docBlock) {
+			$docBlock = preg_replace('/([\n\r])\t+/', '$1', $docBlock);
+			$this->setDocBlock($docBlock);
+		}
+	}
+
+	/**
+	 * @param ReflectionProperty $reflection
 	 * @return CG_Property
 	 */
 	public static function buildFromReflection(ReflectionProperty $reflection) {
 		$property = new self($reflection->getName());
-		if ($reflection->isProtected()) {
-			$property->setVisibility('protected');
-		}
-		if ($reflection->isPrivate()) {
-			$property->setVisibility('private');
-		}
+		$property->extractFromReflection($reflection);
 		//$property->setDefaultValue($reflection->getValue());
 		return $property;
 	}
