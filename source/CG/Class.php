@@ -20,6 +20,9 @@ class CG_Class extends CG_Block {
 	/** @var CG_Method[] */
 	private $_methods = array();
 
+	/** @var boolean */
+	private $_abstract;
+
 	/**
 	 * @param string        $name
 	 * @param string|null   $parentClassName
@@ -53,7 +56,16 @@ class CG_Class extends CG_Block {
 	 * @param string[] $interfaces
 	 */
 	public function setInterfaces(array $interfaces) {
-		$this->_interfaces = $interfaces;
+		foreach ($interfaces as $interface) {
+			$this->addInterface($interface);
+		}
+	}
+
+	/**
+	 * @param boolean $abstract
+	 */
+	public function setAbstract($abstract) {
+		$this->_abstract = (bool) $abstract;
 	}
 
 	/**
@@ -75,6 +87,13 @@ class CG_Class extends CG_Block {
 	 */
 	public function addMethod(CG_Method $method) {
 		$this->_methods[$method->getName()] = $method;
+	}
+
+	/**
+	 * @param string $interface
+	 */
+	public function addInterface($interface) {
+		$this->_interfaces[] = $interface;
 	}
 
 	/**
@@ -103,7 +122,11 @@ class CG_Class extends CG_Block {
 	 * @return string
 	 */
 	private function _dumpHeader() {
-		$content = 'class ' . $this->_name;
+		$content = '';
+		if ($this->_abstract) {
+			$content .= 'abstract ';
+		}
+		$content .= 'class ' . $this->_name;
 		if ($this->_parentClassName) {
 			$content .= ' extends ' . $this->_parentClassName;
 		}
@@ -126,7 +149,12 @@ class CG_Class extends CG_Block {
 		if ($reflection->getParentClass()) {
 			$class->setParentClassName($reflection->getParentClass()->getName());
 		}
-		$class->setInterfaces($reflection->getInterfaceNames());
+		$class->setAbstract($reflection->isAbstract());
+		if ($interfaces = $reflection->getInterfaceNames()) {
+			$parentInterfaces = $reflection->getParentClass()->getInterfaceNames();
+			$interfaces = array_diff($interfaces, $parentInterfaces);
+			$class->setInterfaces($interfaces);
+		}
 		foreach ($reflection->getMethods() as $reflectionMethod) {
 			if ($reflectionMethod->getDeclaringClass() == $reflection) {
 				$method = CG_Method::buildFromReflection($reflectionMethod);
