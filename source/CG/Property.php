@@ -62,6 +62,7 @@ class CG_Property extends CG_Block {
 	 */
 	public function extractFromReflection(ReflectionProperty $reflection) {
 		$this->_setVisibilityFromReflection($reflection);
+		$this->_setDefaultValueFromReflection($reflection);
 		$this->_setDocBlockFromReflection($reflection);
 	}
 
@@ -78,7 +79,8 @@ class CG_Property extends CG_Block {
 	protected function _dumpValue() {
 		$content = $this->_visibility . ' $' . $this->_name;
 		if (null !== $this->_defaultValue) {
-			$content .= ' = ' . var_export($this->_defaultValue, true);
+			$value = new CG_Value($this->_defaultValue);
+			$content .= ' = ' . $value->dump();
 		}
 		$content .= ';';
 		return $content;
@@ -109,12 +111,23 @@ class CG_Property extends CG_Block {
 
 	/**
 	 * @param ReflectionProperty $reflection
+	 */
+	protected function _setDefaultValueFromReflection(ReflectionProperty $reflection) {
+		$defaultProperties = $reflection->getDeclaringClass()->getDefaultProperties();
+		$value = $defaultProperties[$this->getName()];
+		if (null !== $value) {
+			$this->setDefaultValue($value);
+		}
+	}
+
+	/**
+	 * @param ReflectionProperty $reflection
 	 * @return CG_Property
 	 */
 	public static function buildFromReflection(ReflectionProperty $reflection) {
 		$property = new self($reflection->getName());
 		$property->extractFromReflection($reflection);
-		//$property->setDefaultValue($reflection->getValue());
+		// $property->setDefaultValue($reflection->getValue());
 		return $property;
 	}
 }
