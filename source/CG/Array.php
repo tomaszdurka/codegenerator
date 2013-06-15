@@ -30,8 +30,8 @@ class CG_Array extends CG_Block {
 		if (strlen($content) < 100) {
 			return 'array(' . $content . ')';
 		} else {
-			$content = implode(",\n");
-			return $this->_dumpLines(
+			$content = implode(",\n", $entries);
+			return $this->_dumpLine(
 				'array(',
 				$this->_indent($content),
 				')'
