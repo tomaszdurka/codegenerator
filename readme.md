@@ -5,4 +5,5 @@
 For example usage please see: https://github.com/tomaszdurka/codegenerator/blob/master/sandbox.php
 
 ## Status
-![Travis Status](https://api.travis-ci.org/tomaszdurka/codegenerator.png)
+[![Travis Build](https://api.travis-ci.org/tomaszdurka/codegenerator.png)](https://travis-ci.org/tomaszdurka/codegenerator)
+
