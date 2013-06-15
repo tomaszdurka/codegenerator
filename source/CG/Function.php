@@ -69,9 +69,7 @@ class CG_Function extends CG_Block {
 	public function dump() {
 		return $this->_dumpLine(
 			$this->_dumpDocBlock(),
-			$this->_dumpHeader(),
-			$this->_indent($this->_dumpBody()),
-			$this->_dumpFooter()
+			$this->_dumpHeader() . $this->_dumpBody()
 		);
 	}
 
@@ -140,22 +138,19 @@ class CG_Function extends CG_Block {
 		}
 		$content .= '(';
 		$content .= implode(', ', $this->_parameters);
-		$content .= ') {';
+		$content .= ')';
 		return $content;
 	}
 
 	/**
 	 * @return string
 	 */
-	private function _dumpFooter() {
-		return '}';
-	}
-
-	/**
-	 * @return string
-	 */
-	private function _dumpBody() {
-		return $this->_code;
+	protected function _dumpBody() {
+		return $this->_dumpLine(
+			' {',
+			$this->_indent($this->_code),
+			'}'
+		);
 	}
 
 	/**

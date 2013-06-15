@@ -8,6 +8,9 @@ class CG_Method extends CG_Function {
 	/** @var boolean */
 	private $_static;
 
+	/** @var boolean */
+	private $_abstract;
+
 	/**
 	 * @param string $name
 	 * @param callable|string|null $body
@@ -15,6 +18,8 @@ class CG_Method extends CG_Function {
 	public function __construct($name, $body = null) {
 		$this->setName($name);
 		$this->setVisibility('public');
+		$this->setStatic(false);
+		$this->setAbstract(false);
 		parent::__construct($body);
 	}
 
@@ -33,6 +38,13 @@ class CG_Method extends CG_Function {
 	}
 
 	/**
+	 * @param boolean $abstract
+	 */
+	public function setAbstract($abstract) {
+		$this->_abstract = (bool) $abstract;
+	}
+
+	/**
 	 * @param ReflectionFunctionAbstract $reflection
 	 */
 	public function extractFromReflection(ReflectionFunctionAbstract $reflection) {
@@ -40,16 +52,28 @@ class CG_Method extends CG_Function {
 		if ($reflection instanceof ReflectionMethod) {
 			$this->_setVisibilityFromReflection($reflection);
 			$this->_setStaticFromReflection($reflection);
+			$this->_setAbstractFromReflection($reflection);
 		}
 	}
 
 	protected function _dumpHeader() {
-		$code = $this->_visibility;
+		$code = '';
+		if ($this->_abstract) {
+			$code .= 'abstract ';
+		}
+		$code .= $this->_visibility;
 		if ($this->_static) {
 			$code .= ' static';
 		}
 		$code .= ' ' . parent::_dumpHeader();
 		return $code;
+	}
+
+	protected function _dumpBody() {
+		if ($this->_abstract) {
+			return ';';
+		}
+		return parent::_dumpBody();
 	}
 
 	/**
@@ -65,6 +89,10 @@ class CG_Method extends CG_Function {
 		if ($reflection->isPrivate()) {
 			$this->setVisibility('private');
 		}
+	}
+
+	public function _setAbstractFromReflection(ReflectionMethod $reflection) {
+		$this->setAbstract($reflection->isAbstract());
 	}
 
 	/**
