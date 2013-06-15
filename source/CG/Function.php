@@ -56,7 +56,10 @@ class CG_Function extends CG_Block {
 	 * @param string $code
 	 */
 	public function setCode($code) {
-		$this->_code = $this->_outdent((string) $code, true);
+		if (null !== $code) {
+			$code = $this->_outdent((string) $code, true);
+		}
+		$this->_code = $code;
 	}
 
 	/**
@@ -100,6 +103,9 @@ class CG_Function extends CG_Block {
 		$code = preg_replace('/^\s*[\r\n]+/', '', $code);
 		$code = preg_replace('/[\r\n]+\s*$/', '', $code);
 
+		if (!trim($code)) {
+			$code = null;
+		}
 		$this->setCode($code);
 	}
 
@@ -146,11 +152,11 @@ class CG_Function extends CG_Block {
 	 * @return string
 	 */
 	protected function _dumpBody() {
-		return $this->_dumpLine(
-			' {',
-			$this->_indent($this->_code),
-			'}'
-		);
+		$code = $this->_code;
+		if ($code) {
+			$code = $this->_indent($code);
+		}
+		return $this->_dumpLine(' {', $code, '}');
 	}
 
 	/**
