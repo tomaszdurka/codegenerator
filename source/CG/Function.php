@@ -160,7 +160,6 @@ class CG_Function extends CG_Block {
 
 	/**
 	 * @param ReflectionFunctionAbstract $reflection
-	 * @return CG_Function
 	 */
 	public function extractFromReflection(ReflectionFunctionAbstract $reflection) {
 		$this->_setBodyFromReflection($reflection);
@@ -170,9 +169,8 @@ class CG_Function extends CG_Block {
 
 	/**
 	 * @param callable $closure
-	 * @return CG_Function
 	 */
 	public function extractFromClosure(Closure $closure) {
-		return $this->extractFromReflection(new ReflectionFunction($closure));
+		$this->extractFromReflection(new ReflectionFunction($closure));
 	}
 }
