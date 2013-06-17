@@ -11,7 +11,7 @@ class CG_Property extends CG_Block {
 	/** @var mixed */
 	private $_defaultValue;
 
-	/** @var string */
+	/** @var string|null */
 	protected $_docBlock;
 
 	/**
@@ -44,10 +44,13 @@ class CG_Property extends CG_Block {
 	}
 
 	/**
-	 * @param string $docBlock
+	 * @param string|null $docBlock
 	 */
 	public function setDocBlock($docBlock) {
-		$this->_docBlock = (string) $docBlock;
+		if (null !== $docBlock) {
+			$docBlock = (string) $docBlock;
+		}
+		$this->_docBlock = $docBlock;
 	}
 
 	public function dump() {
