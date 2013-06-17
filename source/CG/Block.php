@@ -3,7 +3,7 @@
 abstract class CG_Block {
 
 	/** @var string */
-	protected $_indentation = '	';
+	protected static $_indentation = '	';
 
 	/**
 	 * @return string
@@ -19,7 +19,7 @@ abstract class CG_Block {
 	 * @return string
 	 */
 	protected function _indent($content) {
-		return preg_replace('/(:?^|[\n])/', '$1' . $this->_indentation, $content);
+		return preg_replace('/(:?^|[\n])/', '$1' . self::$_indentation, $content);
 	}
 
 	/**
@@ -28,7 +28,10 @@ abstract class CG_Block {
 	 * @return string
 	 */
 	protected function _outdent($content, $untilUnsafe = null) {
-		$indentation = $this->_indentation;
+		$indentation = self::$_indentation;
+		if (!$indentation) {
+			return $content;
+		}
 		$lines = explode(PHP_EOL, $content);
 		if ($untilUnsafe) {
 			$nonemptyLines = array_filter($lines, function($line) {
@@ -42,7 +45,7 @@ abstract class CG_Block {
 			}
 		}
 		foreach ($lines as $key => $line) {
-			$lines[$key] = preg_replace('/^' . preg_quote($this->_indentation) .  '/', '$1', $line);
+			$lines[$key] = preg_replace('/^' . preg_quote(self::$_indentation) .  '/', '$1', $line);
 		}
 		$content = implode(PHP_EOL, $lines);
 		if ($untilUnsafe) {
@@ -68,5 +71,12 @@ abstract class CG_Block {
 		return implode(PHP_EOL, array_filter($lines, function ($element) {
 			return !is_null($element);
 		}));
+	}
+
+	/**
+	 * @param string $indentation
+	 */
+	public static function setIndentation($indentation) {
+		self::$_indentation = (string) $indentation;
 	}
 }

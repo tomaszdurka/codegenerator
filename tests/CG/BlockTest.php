@@ -40,4 +40,14 @@ class CG_BlockTest extends PHPUnit_Framework_TestCase {
 			$this->assertSame($expected, $output);
 		}
 	}
+
+	public function testSetIndentation() {
+		CG_Block::setIndentation('  ');
+		$block = new CG_File();
+
+		$output = TestHelper::invokeMethod($block, '_indent', array("foo", true));
+		$this->assertSame("  foo", $output);
+		$output = TestHelper::invokeMethod($block, '_outdent', array("  foo\n    bar", true));
+		$this->assertSame("foo\n  bar", $output);
+	}
 }
