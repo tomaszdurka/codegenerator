@@ -2,5 +2,5 @@
 
 abstract class MockAbstractClass implements Countable {
 
-	abstract protected function abstractMethod();
+    abstract protected function abstractMethod();
 }

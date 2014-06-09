@@ -27,9 +27,9 @@ class CG_Class extends CG_Block {
     private $_abstract;
 
     /**
-     * @param string        $name
-     * @param string|null   $parentClassName
-     * @param array|null    $interfaces
+     * @param string      $name
+     * @param string|null $parentClassName
+     * @param array|null  $interfaces
      */
     public function __construct($name, $parentClassName = null, array $interfaces = null) {
         $this->_name = (string) $name;
