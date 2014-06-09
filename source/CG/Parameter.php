@@ -49,7 +49,7 @@ class CG_Parameter extends CG_Block {
     public function dump() {
         $content = '';
         if ($this->_type) {
-            $content .= $this->_type . ' ';
+            $content .= $this->_getType() . ' ';
         }
         $content .= '$' . $this->_name;
         if ($this->_optional) {
@@ -64,6 +64,17 @@ class CG_Parameter extends CG_Block {
         }
         $value = new CG_Value($this->_defaultValue);
         return $value->dump();
+    }
+
+    /**
+     * @return null|string
+     */
+    protected function _getType() {
+        $type = $this->_type;
+        if (null !== $type && 'array' !== $type) {
+            $type = self::_normalizeClassName($type);
+        }
+        return $type;
     }
 
     /**

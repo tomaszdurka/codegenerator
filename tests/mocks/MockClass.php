@@ -1,6 +1,8 @@
 <?php
 
-class MockClass extends MockAbstractClass {
+namespace CGMocks;
+
+class MockClass extends \CGMocks\MockAbstractClass {
 
     const FOO = 1;
 
@@ -19,7 +21,7 @@ class MockClass extends MockAbstractClass {
         return count($this->foo);
     }
 
-    public function withTypeHinting(Countable $countable, array $array) {
+    public function withTypeHinting(\Countable $countable, array $array) {
     }
 
     public function defaultValues($defaultValue = null, $defaultArray = array()) {

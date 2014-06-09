@@ -79,4 +79,15 @@ abstract class CG_Block {
     public static function setIndentation($indentation) {
         self::$_indentation = (string) $indentation;
     }
+
+    /**
+     * @param string $className
+     * @return string
+     */
+    protected static function _normalizeClassName($className) {
+        if (strpos($className, '\\') !== 0) {
+            $className = '\\' . $className;
+        }
+        return $className;
+    }
 }
