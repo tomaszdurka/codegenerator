@@ -5,10 +5,10 @@ class CG_BlockTest extends PHPUnit_Framework_TestCase {
     public function testOutdent() {
         $block = new CG_File();
         $cases = array(
-            "\tfoo"      => "foo",
+            "    foo"      => "foo",
             "foo"        => "foo",
-            "\tfoo\nbar" => "foo\nbar",
-            "\t\t\tfoo"  => "\t\tfoo",
+            "    foo\nbar" => "foo\nbar",
+            "            foo"  => "        foo",
         );
         foreach ($cases as $input => $expected) {
             $output = TestHelper::invokeMethod($block, '_outdent', array($input));
@@ -19,9 +19,9 @@ class CG_BlockTest extends PHPUnit_Framework_TestCase {
     public function testOutdentUntilSafe() {
         $block = new CG_File();
         $cases = array(
-            "\tfoo\nbar"     => "\tfoo\nbar",
-            "\t\tfoo\n\tbar" => "\tfoo\nbar",
-            "\t\t\tfoo"      => "foo",
+            "    foo\nbar"     => "    foo\nbar",
+            "        foo\n    bar" => "    foo\nbar",
+            "            foo"      => "foo",
         );
         foreach ($cases as $input => $expected) {
             $output = TestHelper::invokeMethod($block, '_outdent', array($input, true));
@@ -32,8 +32,8 @@ class CG_BlockTest extends PHPUnit_Framework_TestCase {
     public function testIndent() {
         $block = new CG_File();
         $cases = array(
-            "foo\nbar"     => "\tfoo\n\tbar",
-            "\tfoo\n\tbar" => "\t\tfoo\n\t\tbar",
+            "foo\nbar"     => "    foo\n    bar",
+            "    foo\n    bar" => "        foo\n        bar",
         );
         foreach ($cases as $input => $expected) {
             $output = TestHelper::invokeMethod($block, '_indent', array($input, true));

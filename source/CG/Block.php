@@ -3,7 +3,7 @@
 abstract class CG_Block {
 
     /** @var string */
-    protected static $_indentation = '  ';
+    protected static $_indentation = '    ';
 
     /**
      * @return string

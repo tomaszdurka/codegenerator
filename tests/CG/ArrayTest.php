@@ -12,7 +12,7 @@ class CG_ArrayTest extends PHPUnit_Framework_TestCase {
     public function testDumpLong() {
         $value = array_fill(0, 100, 'foo');
         $array = new CG_Array($value);
-        $this->assertRegExp("/\n\t/", $array->dump());
+        $this->assertRegExp("/\n    /", $array->dump());
         $this->assertCount(count($value) + 2, explode("\n", $array->dump()));
         $this->_assertSame($value, $array);
     }

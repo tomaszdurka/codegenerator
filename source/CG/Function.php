@@ -125,7 +125,7 @@ class CG_Function extends CG_Block {
     protected function _setDocBlockFromReflection(ReflectionFunctionAbstract $reflection) {
         $docBlock = $reflection->getDocComment();
         if ($docBlock) {
-            $docBlock = preg_replace('/([\n\r])\t+/', '$1', $docBlock);
+            $docBlock = preg_replace('/([\n\r])(' . self::$_indentation . ')+/', '$1', $docBlock);
             $this->setDocBlock($docBlock);
         }
     }

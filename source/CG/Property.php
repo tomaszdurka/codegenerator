@@ -107,7 +107,7 @@ class CG_Property extends CG_Block {
     protected function _setDocBlockFromReflection(ReflectionProperty $reflection) {
         $docBlock = $reflection->getDocComment();
         if ($docBlock) {
-            $docBlock = preg_replace('/([\n\r])\t+/', '$1', $docBlock);
+            $docBlock = preg_replace('/([\n\r])(' . self::$_indentation . ')+/', '$1', $docBlock);
             $this->setDocBlock($docBlock);
         }
     }
