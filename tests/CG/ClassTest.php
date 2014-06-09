@@ -1,6 +1,6 @@
 <?php
 
-class ClassTest extends PHPUnit_Framework_TestCase {
+class CG_ClassTest extends PHPUnit_Framework_TestCase {
 
     public function testDump() {
         $classes = array('MockAbstractClass', 'MockClass');
