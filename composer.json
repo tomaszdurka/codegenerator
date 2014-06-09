@@ -1,17 +1,17 @@
 {
-    "name": "tomaszdurka/codegenerator",
-    "authors": [
-        {
-            "name": "Tomasz Durka",
-            "email": "tomasz@durka.pl"
-        }
-    ],
-    "require": {
-
-    },
-	"autoload": {
-		"psr-0": {
-			"CG_": "source/"
-		}
-	}
+  "name": "tomaszdurka/codegenerator",
+  "authors": [
+    {
+      "name": "Tomasz Durka",
+      "email": "tomasz@durka.pl"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "~3.7.10"
+  },
+  "autoload": {
+    "psr-0": {
+      "CG_": "source/"
+    }
+  }
 }

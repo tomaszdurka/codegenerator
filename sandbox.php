@@ -3,15 +3,13 @@ require 'vendor/autoload.php';
 
 $file = new CG_File();
 
-
-$closureFunction = new CG_Function(function($bar = null) {
-	return 'foo';
+$closureFunction = new CG_Function(function ($bar = null) {
+    return 'foo';
 });
 $file->addBlock($closureFunction);
 
 $function = new CG_Function('return true;');
 $file->addBlock($function);
-
 
 $method = new CG_Method('_bar');
 $method->setVisibility('private');
