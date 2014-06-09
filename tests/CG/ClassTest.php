@@ -1,11 +1,10 @@
 <?php
 
-class ClassTest extends PHPUnit_Framework_TestCase {
+class CG_ClassTest extends PHPUnit_Framework_TestCase {
 
     public function testDump() {
-        $classes = array('MockAbstractClass', 'MockClass');
+        $classes = array('CGMocks\\MockAbstractClass', 'CGMocks\\MockClass');
         foreach ($classes as $className) {
-            require DIR_TESTS . 'mocks/' . $className . '.php';
             $file = new CG_File();
 
             $reflectionClass = new ReflectionClass($className);

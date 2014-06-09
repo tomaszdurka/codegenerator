@@ -6,6 +6,9 @@ class CG_Class extends CG_Block {
     private $_name;
 
     /** @var string */
+    private $_namespace;
+
+    /** @var string */
     private $_parentClassName;
 
     /** @var string[] */
@@ -53,6 +56,13 @@ class CG_Class extends CG_Block {
      */
     public function setParentClassName($parentClassName) {
         $this->_parentClassName = (string) $parentClassName;
+    }
+
+    /**
+     * @param string $namespace
+     */
+    public function setNamespace($namespace) {
+        $this->_namespace = (string) $namespace;
     }
 
     /**
@@ -136,19 +146,39 @@ class CG_Class extends CG_Block {
      * @return string
      */
     private function _dumpHeader() {
-        $content = '';
-        if ($this->_abstract) {
-            $content .= 'abstract ';
+        $lines = array();
+        if ($this->_namespace) {
+            $lines[] = 'namespace ' . $this->_namespace . ';';
+            $lines[] = '';
         }
-        $content .= 'class ' . $this->_name;
+        $classDeclaration = '';
+        if ($this->_abstract) {
+            $classDeclaration .= 'abstract ';
+        }
+        $classDeclaration .= 'class ' . $this->_name;
         if ($this->_parentClassName) {
-            $content .= ' extends ' . $this->_parentClassName;
+            $classDeclaration .= ' extends ' . $this->_getParentClassName();
         }
         if ($this->_interfaces) {
-            $content .= ' implements ' . implode(', ', $this->_interfaces);
+            $classDeclaration .= ' implements ' . implode(', ', $this->_getInterfaces());
         }
-        $content .= ' {';
-        return $content;
+        $classDeclaration .= ' {';
+        $lines[] = $classDeclaration;
+        return $this->_dumpLines($lines);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function _getInterfaces() {
+        return array_map(array('self', '_normalizeClassName'), $this->_interfaces);
+    }
+
+    /**
+     * @return string
+     */
+    private  function _getParentClassName() {
+        return self::_normalizeClassName($this->_parentClassName);
     }
 
     /**
@@ -159,7 +189,8 @@ class CG_Class extends CG_Block {
     }
 
     public static function buildFromReflection(ReflectionClass $reflection) {
-        $class = new self($reflection->getName());
+        $class = new self($reflection->getShortName());
+        $class->setNamespace($reflection->getNamespaceName());
         $reflectionParentClass = $reflection->getParentClass();
         if ($reflectionParentClass) {
             $class->setParentClassName($reflectionParentClass->getName());

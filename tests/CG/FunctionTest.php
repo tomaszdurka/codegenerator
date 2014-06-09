@@ -1,6 +1,6 @@
 <?php
 
-class FunctionTest extends PHPUnit_Framework_TestCase {
+class CG_FunctionTest extends PHPUnit_Framework_TestCase {
 
     public function testExtractFromClosure() {
         $closure = function ($a, $b) {
