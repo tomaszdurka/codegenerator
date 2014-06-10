@@ -72,17 +72,10 @@ class CG_Function extends CG_Block {
         $this->_docBlock = $docBlock;
     }
 
-    public function dump() {
-        return $this->_dumpLine(
-            $this->_dumpDocBlock(),
-            $this->_dumpHeader() . $this->_dumpBody()
-        );
-    }
-
     /**
      * @param ReflectionFunctionAbstract $reflection
      */
-    protected function _setBodyFromReflection(ReflectionFunctionAbstract $reflection) {
+    public function setBodyFromReflection(ReflectionFunctionAbstract $reflection) {
         /** @var $reflection ReflectionMethod */
         if (is_a($reflection, 'ReflectionMethod') && $reflection->isAbstract()) {
             $this->_code = null;
@@ -115,19 +108,29 @@ class CG_Function extends CG_Block {
     /**
      * @param ReflectionFunctionAbstract $reflection
      */
-    protected function _setParametersFromReflection(ReflectionFunctionAbstract $reflection) {
+    public function setParametersFromReflection(ReflectionFunctionAbstract $reflection) {
         foreach ($reflection->getParameters() as $reflectionParameter) {
             $parameter = CG_Parameter::buildFromReflection($reflectionParameter);
             $this->addParameter($parameter);
         }
     }
 
-    protected function _setDocBlockFromReflection(ReflectionFunctionAbstract $reflection) {
+    /**
+     * @param ReflectionFunctionAbstract $reflection
+     */
+    public function setDocBlockFromReflection(ReflectionFunctionAbstract $reflection) {
         $docBlock = $reflection->getDocComment();
         if ($docBlock) {
             $docBlock = preg_replace('/([\n\r])(' . self::$_indentation . ')+/', '$1', $docBlock);
             $this->setDocBlock($docBlock);
         }
+    }
+
+    public function dump() {
+        return $this->_dumpLine(
+            $this->_dumpDocBlock(),
+            $this->_dumpHeader() . $this->_dumpBody()
+        );
     }
 
     /**
@@ -166,9 +169,9 @@ class CG_Function extends CG_Block {
      * @param ReflectionFunctionAbstract $reflection
      */
     public function extractFromReflection(ReflectionFunctionAbstract $reflection) {
-        $this->_setBodyFromReflection($reflection);
-        $this->_setParametersFromReflection($reflection);
-        $this->_setDocBlockFromReflection($reflection);
+        $this->setBodyFromReflection($reflection);
+        $this->setParametersFromReflection($reflection);
+        $this->setDocBlockFromReflection($reflection);
     }
 
     /**
