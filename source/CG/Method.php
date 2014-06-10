@@ -50,10 +50,39 @@ class CG_Method extends CG_Function {
     public function extractFromReflection(ReflectionFunctionAbstract $reflection) {
         parent::extractFromReflection($reflection);
         if ($reflection instanceof ReflectionMethod) {
-            $this->_setVisibilityFromReflection($reflection);
-            $this->_setStaticFromReflection($reflection);
-            $this->_setAbstractFromReflection($reflection);
+            $this->setVisibilityFromReflection($reflection);
+            $this->setStaticFromReflection($reflection);
+            $this->setAbstractFromReflection($reflection);
         }
+    }
+
+    /**
+     * @param ReflectionMethod $reflection
+     */
+    public function setVisibilityFromReflection(ReflectionMethod $reflection) {
+        if ($reflection->isPublic()) {
+            $this->setVisibility('public');
+        }
+        if ($reflection->isProtected()) {
+            $this->setVisibility('protected');
+        }
+        if ($reflection->isPrivate()) {
+            $this->setVisibility('private');
+        }
+    }
+
+    /**
+     * @param ReflectionMethod $reflection
+     */
+    public function setAbstractFromReflection(ReflectionMethod $reflection) {
+        $this->setAbstract($reflection->isAbstract());
+    }
+
+    /**
+     * @param ReflectionMethod $reflection
+     */
+    public function setStaticFromReflection(ReflectionMethod $reflection) {
+        $this->setStatic($reflection->isStatic());
     }
 
     protected function _dumpHeader() {
@@ -74,32 +103,6 @@ class CG_Method extends CG_Function {
             return ';';
         }
         return parent::_dumpBody();
-    }
-
-    /**
-     * @param ReflectionMethod $reflection
-     */
-    private function _setVisibilityFromReflection(ReflectionMethod $reflection) {
-        if ($reflection->isPublic()) {
-            $this->setVisibility('public');
-        }
-        if ($reflection->isProtected()) {
-            $this->setVisibility('protected');
-        }
-        if ($reflection->isPrivate()) {
-            $this->setVisibility('private');
-        }
-    }
-
-    public function _setAbstractFromReflection(ReflectionMethod $reflection) {
-        $this->setAbstract($reflection->isAbstract());
-    }
-
-    /**
-     * @param ReflectionMethod $reflection
-     */
-    private function _setStaticFromReflection(ReflectionMethod $reflection) {
-        $this->setStatic($reflection->isStatic());
     }
 
     /**
