@@ -27,6 +27,9 @@ class MockClass extends \CGMocks\MockAbstractClass {
     public function defaultValues($defaultValue = null, $defaultArray = array()) {
     }
 
+    public function withReferenceParam(&$param) {
+    }
+
     protected function abstractMethod() {
     }
 

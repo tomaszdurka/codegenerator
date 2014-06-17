@@ -14,15 +14,19 @@ class CG_Parameter extends CG_Block {
     /** @var boolean */
     private $_optional;
 
+    /** @var boolean */
+    private $_passedByReference;
+
     /**
-     * @param string      $name
-     * @param string|null $type
-     * @param null        $optional
-     * @param mixed|null  $defaultValue
+     * @param string       $name
+     * @param string|null  $type
+     * @param null         $optional
+     * @param mixed|null   $defaultValue
+     * @param boolean|null $passedByReference
      * @throws Exception
      * @internal param bool|null $isOptional
      */
-    public function __construct($name, $type = null, $optional = null, $defaultValue = null) {
+    public function __construct($name, $type = null, $optional = null, $defaultValue = null, $passedByReference = null) {
         $this->_name = (string) $name;
         if (null !== $type) {
             $this->_type = (string) $type;
@@ -34,6 +38,7 @@ class CG_Parameter extends CG_Block {
             }
             $this->_defaultValue = $defaultValue;
         }
+        $this->_passedByReference = (bool) $passedByReference;
     }
 
     /**
@@ -50,6 +55,9 @@ class CG_Parameter extends CG_Block {
         $content = '';
         if ($this->_type) {
             $content .= $this->_getType() . ' ';
+        }
+        if ($this->_passedByReference) {
+            $content .= '&';
         }
         $content .= '$' . $this->_name;
         if ($this->_optional) {
@@ -93,7 +101,6 @@ class CG_Parameter extends CG_Block {
         if ($reflection->isOptional()) {
             $defaultValue = $reflection->getDefaultValue();
         }
-
-        return new self($reflection->getName(), $type, $reflection->isOptional(), $defaultValue);
+        return new self($reflection->getName(), $type, $reflection->isOptional(), $defaultValue, $reflection->isPassedByReference());
     }
 }
