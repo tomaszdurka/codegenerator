@@ -1,5 +1,7 @@
 <?php
 
+use CodeGenerator\CG_Function;
+
 class CG_FunctionTest extends PHPUnit_Framework_TestCase {
 
     public function testExtractFromClosure() {

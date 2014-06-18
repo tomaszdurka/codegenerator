@@ -1,5 +1,7 @@
 <?php
 
+namespace CodeGenerator;
+
 class CG_Method extends CG_Function {
 
     /** @var string */

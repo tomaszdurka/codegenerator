@@ -1,5 +1,7 @@
 <?php
 
+namespace CodeGenerator;
+
 class CG_Function extends CG_Block {
 
     /** @var string|null */

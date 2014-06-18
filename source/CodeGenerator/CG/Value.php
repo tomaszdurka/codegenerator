@@ -1,5 +1,7 @@
 <?php
 
+namespace CodeGenerator;
+
 class CG_Value extends CG_Block {
 
     /** @var mixed */

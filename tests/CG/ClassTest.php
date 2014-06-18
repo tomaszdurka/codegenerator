@@ -1,5 +1,8 @@
 <?php
 
+use CodeGenerator\CG_Class;
+use CodeGenerator\CG_File;
+
 class CG_ClassTest extends PHPUnit_Framework_TestCase {
 
     public function testDump() {

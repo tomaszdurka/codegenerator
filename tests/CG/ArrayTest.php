@@ -1,5 +1,7 @@
 <?php
 
+use CodeGenerator\CG_Array;
+
 class CG_ArrayTest extends PHPUnit_Framework_TestCase {
 
     public function testDumpShort() {

@@ -1,5 +1,8 @@
 <?php
 
+use CodeGenerator\CG_Block;
+use CodeGenerator\CG_File;
+
 class CG_BlockTest extends PHPUnit_Framework_TestCase {
 
     public function testOutdent() {

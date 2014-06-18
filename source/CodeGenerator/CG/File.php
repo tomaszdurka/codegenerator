@@ -1,5 +1,7 @@
 <?php
 
+namespace CodeGenerator;
+
 class CG_File extends CG_Block {
 
     /** @var CG_Block[] */

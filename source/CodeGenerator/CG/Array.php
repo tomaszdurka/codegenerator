@@ -1,5 +1,7 @@
 <?php
 
+namespace CodeGenerator;
+
 class CG_Array extends CG_Block {
 
     /** @var array */
