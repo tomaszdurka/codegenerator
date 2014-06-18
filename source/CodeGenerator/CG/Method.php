@@ -47,11 +47,11 @@ class CG_Method extends CG_Function {
     }
 
     /**
-     * @param ReflectionFunctionAbstract $reflection
+     * @param \ReflectionFunctionAbstract $reflection
      */
-    public function extractFromReflection(ReflectionFunctionAbstract $reflection) {
+    public function extractFromReflection(\ReflectionFunctionAbstract $reflection) {
         parent::extractFromReflection($reflection);
-        if ($reflection instanceof ReflectionMethod) {
+        if ($reflection instanceof \ReflectionMethod) {
             $this->setVisibilityFromReflection($reflection);
             $this->setStaticFromReflection($reflection);
             $this->setAbstractFromReflection($reflection);
@@ -59,9 +59,9 @@ class CG_Method extends CG_Function {
     }
 
     /**
-     * @param ReflectionMethod $reflection
+     * @param \ReflectionMethod $reflection
      */
-    public function setVisibilityFromReflection(ReflectionMethod $reflection) {
+    public function setVisibilityFromReflection(\ReflectionMethod $reflection) {
         if ($reflection->isPublic()) {
             $this->setVisibility('public');
         }
@@ -74,16 +74,16 @@ class CG_Method extends CG_Function {
     }
 
     /**
-     * @param ReflectionMethod $reflection
+     * @param \ReflectionMethod $reflection
      */
-    public function setAbstractFromReflection(ReflectionMethod $reflection) {
+    public function setAbstractFromReflection(\ReflectionMethod $reflection) {
         $this->setAbstract($reflection->isAbstract());
     }
 
     /**
-     * @param ReflectionMethod $reflection
+     * @param \ReflectionMethod $reflection
      */
-    public function setStaticFromReflection(ReflectionMethod $reflection) {
+    public function setStaticFromReflection(\ReflectionMethod $reflection) {
         $this->setStatic($reflection->isStatic());
     }
 
@@ -108,10 +108,10 @@ class CG_Method extends CG_Function {
     }
 
     /**
-     * @param ReflectionMethod $reflection
+     * @param \ReflectionMethod $reflection
      * @return self
      */
-    public static function buildFromReflection(ReflectionMethod $reflection) {
+    public static function buildFromReflection(\ReflectionMethod $reflection) {
         $method = new self($reflection->getName());
         $method->extractFromReflection($reflection);
         return $method;

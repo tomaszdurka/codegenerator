@@ -1,16 +1,18 @@
 <?php
 
+namespace TestsCodeGenerator;
+
 use CodeGenerator\CG_Class;
 use CodeGenerator\CG_File;
 
-class CG_ClassTest extends PHPUnit_Framework_TestCase {
+class CG_ClassTest extends \PHPUnit_Framework_TestCase {
 
     public function testDump() {
         $classes = array('CGMocks\\MockAbstractClass', 'CGMocks\\MockClass');
         foreach ($classes as $className) {
             $file = new CG_File();
 
-            $reflectionClass = new ReflectionClass($className);
+            $reflectionClass = new \ReflectionClass($className);
             $reflectedClass = CG_Class::buildFromReflection($reflectionClass);
             $file->addBlock($reflectedClass);
 

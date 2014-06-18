@@ -25,7 +25,7 @@ class CG_Parameter extends CG_Block {
      * @param null         $optional
      * @param mixed|null   $defaultValue
      * @param boolean|null $passedByReference
-     * @throws Exception
+     * @throws \Exception
      * @internal param bool|null $isOptional
      */
     public function __construct($name, $type = null, $optional = null, $defaultValue = null, $passedByReference = null) {
@@ -36,7 +36,7 @@ class CG_Parameter extends CG_Block {
         $this->_optional = (bool) $optional;
         if (null !== $defaultValue) {
             if (!$this->_optional) {
-                throw new Exception('Cannot set default value for non-optional parameter');
+                throw new \Exception('Cannot set default value for non-optional parameter');
             }
             $this->_defaultValue = $defaultValue;
         }
@@ -88,10 +88,10 @@ class CG_Parameter extends CG_Block {
     }
 
     /**
-     * @param ReflectionParameter $reflection
+     * @param \ReflectionParameter $reflection
      * @return self
      */
-    public static function buildFromReflection(ReflectionParameter $reflection) {
+    public static function buildFromReflection(\ReflectionParameter $reflection) {
         $type = null;
         if ($reflection->isArray()) {
             $type = 'array';

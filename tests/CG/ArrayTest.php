@@ -1,8 +1,10 @@
 <?php
 
+namespace TestsCodeGenerator;
+
 use CodeGenerator\CG_Array;
 
-class CG_ArrayTest extends PHPUnit_Framework_TestCase {
+class CG_ArrayTest extends \PHPUnit_Framework_TestCase {
 
     public function testDumpShort() {
         $value = array('foo', 'bar');

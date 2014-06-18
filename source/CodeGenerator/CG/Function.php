@@ -21,7 +21,7 @@ class CG_Function extends CG_Block {
      */
     public function __construct($body = null) {
         if (null !== $body) {
-            if ($body instanceof Closure) {
+            if ($body instanceof \Closure) {
                 $this->extractFromClosure($body);
             } else {
                 $this->setCode($body);
@@ -45,11 +45,11 @@ class CG_Function extends CG_Block {
 
     /**
      * @param CG_Parameter $parameter
-     * @throws Exception
+     * @throws \Exception
      */
     public function addParameter(CG_Parameter $parameter) {
         if (array_key_exists($parameter->getName(), $this->_parameters)) {
-            throw new Exception('Paremter `' . $parameter->getName() . '` is already set.');
+            throw new \Exception('Parameter `' . $parameter->getName() . '` is already set.');
         }
         $this->_parameters[$parameter->getName()] = $parameter;
     }
@@ -75,15 +75,15 @@ class CG_Function extends CG_Block {
     }
 
     /**
-     * @param ReflectionFunctionAbstract $reflection
+     * @param \ReflectionFunctionAbstract $reflection
      */
-    public function setBodyFromReflection(ReflectionFunctionAbstract $reflection) {
-        /** @var $reflection ReflectionMethod */
-        if (is_a($reflection, 'ReflectionMethod') && $reflection->isAbstract()) {
+    public function setBodyFromReflection(\ReflectionFunctionAbstract $reflection) {
+        /** @var $reflection \ReflectionMethod */
+        if (is_a($reflection, '\\ReflectionMethod') && $reflection->isAbstract()) {
             $this->_code = null;
             return;
         }
-        $file = new SplFileObject($reflection->getFileName());
+        $file = new \SplFileObject($reflection->getFileName());
         $file->seek($reflection->getStartLine() - 1);
 
         $code = '';
@@ -108,9 +108,9 @@ class CG_Function extends CG_Block {
     }
 
     /**
-     * @param ReflectionFunctionAbstract $reflection
+     * @param \ReflectionFunctionAbstract $reflection
      */
-    public function setParametersFromReflection(ReflectionFunctionAbstract $reflection) {
+    public function setParametersFromReflection(\ReflectionFunctionAbstract $reflection) {
         foreach ($reflection->getParameters() as $reflectionParameter) {
             $parameter = CG_Parameter::buildFromReflection($reflectionParameter);
             $this->addParameter($parameter);
@@ -118,9 +118,9 @@ class CG_Function extends CG_Block {
     }
 
     /**
-     * @param ReflectionFunctionAbstract $reflection
+     * @param \ReflectionFunctionAbstract $reflection
      */
-    public function setDocBlockFromReflection(ReflectionFunctionAbstract $reflection) {
+    public function setDocBlockFromReflection(\ReflectionFunctionAbstract $reflection) {
         $docBlock = $reflection->getDocComment();
         if ($docBlock) {
             $docBlock = preg_replace('/([\n\r])(' . self::$_indentation . ')+/', '$1', $docBlock);
@@ -168,18 +168,18 @@ class CG_Function extends CG_Block {
     }
 
     /**
-     * @param ReflectionFunctionAbstract $reflection
+     * @param \ReflectionFunctionAbstract $reflection
      */
-    public function extractFromReflection(ReflectionFunctionAbstract $reflection) {
+    public function extractFromReflection(\ReflectionFunctionAbstract $reflection) {
         $this->setBodyFromReflection($reflection);
         $this->setParametersFromReflection($reflection);
         $this->setDocBlockFromReflection($reflection);
     }
 
     /**
-     * @param callable $closure
+     * @param \Closure $closure
      */
-    public function extractFromClosure(Closure $closure) {
-        $this->extractFromReflection(new ReflectionFunction($closure));
+    public function extractFromClosure(\Closure $closure) {
+        $this->extractFromReflection(new \ReflectionFunction($closure));
     }
 }

@@ -190,7 +190,7 @@ class CG_Class extends CG_Block {
         return '}';
     }
 
-    public static function buildFromReflection(ReflectionClass $reflection) {
+    public static function buildFromReflection(\ReflectionClass $reflection) {
         $class = new self($reflection->getShortName());
         $class->setNamespace($reflection->getNamespaceName());
         $reflectionParentClass = $reflection->getParentClass();

@@ -1,8 +1,10 @@
 <?php
 
+namespace TestsCodeGenerator;
+
 use CodeGenerator\CG_Function;
 
-class CG_FunctionTest extends PHPUnit_Framework_TestCase {
+class CG_FunctionTest extends \PHPUnit_Framework_TestCase {
 
     public function testExtractFromClosure() {
         $closure = function ($a, $b) {
@@ -10,14 +12,14 @@ class CG_FunctionTest extends PHPUnit_Framework_TestCase {
         };
         $function = new CG_Function($closure);
         eval('$multiply = ' . $function->dump() . ';');
-        /** @var $multiply Closure */
+        /** @var $multiply \Closure */
         $this->assertSame(12, $multiply(3, 4));
     }
 
     public function testSetCodeString() {
         $function = new CG_Function('return true;');
         eval('$true = ' . $function->dump() . ';');
-        /** @var $true Closure */
+        /** @var $true \Closure */
         $this->assertTrue($true());
     }
 }
