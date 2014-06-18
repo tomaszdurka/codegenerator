@@ -1,6 +1,8 @@
 <?php
 
-abstract class CG_Block {
+namespace CodeGenerator;
+
+abstract class Block {
 
     /** @var string */
     protected static $_indentation = '    ';

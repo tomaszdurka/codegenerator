@@ -1,8 +1,8 @@
 <?php
 
-namespace CGMocks;
+namespace CodeGeneratorMocks;
 
-class MockClass extends \CGMocks\MockAbstractClass {
+class MockClass extends \CodeGeneratorMocks\MockAbstractClass {
 
     const FOO = 1;
 

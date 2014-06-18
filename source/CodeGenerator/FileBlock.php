@@ -1,14 +1,16 @@
 <?php
 
-class CG_File extends CG_Block {
+namespace CodeGenerator;
 
-    /** @var CG_Block[] */
+class FileBlock extends Block {
+
+    /** @var Block[] */
     private $_blocks = array();
 
     /**
-     * @param CG_Block $block
+     * @param Block $block
      */
-    public function addBlock(CG_Block $block) {
+    public function addBlock(Block $block) {
         $this->_blocks[] = $block;
     }
 

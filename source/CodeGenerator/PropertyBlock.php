@@ -1,6 +1,8 @@
 <?php
 
-class CG_Property extends CG_Block {
+namespace CodeGenerator;
+
+class PropertyBlock extends Block {
 
     /** @var string */
     private $_name;
@@ -61,9 +63,9 @@ class CG_Property extends CG_Block {
     }
 
     /**
-     * @param ReflectionProperty $reflection
+     * @param \ReflectionProperty $reflection
      */
-    public function extractFromReflection(ReflectionProperty $reflection) {
+    public function extractFromReflection(\ReflectionProperty $reflection) {
         $this->_setVisibilityFromReflection($reflection);
         $this->_setDefaultValueFromReflection($reflection);
         $this->_setDocBlockFromReflection($reflection);
@@ -82,7 +84,7 @@ class CG_Property extends CG_Block {
     protected function _dumpValue() {
         $content = $this->_visibility . ' $' . $this->_name;
         if (null !== $this->_defaultValue) {
-            $value = new CG_Value($this->_defaultValue);
+            $value = new ValueBlock($this->_defaultValue);
             $content .= ' = ' . $value->dump();
         }
         $content .= ';';
@@ -90,9 +92,9 @@ class CG_Property extends CG_Block {
     }
 
     /**
-     * @param ReflectionProperty $reflection
+     * @param \ReflectionProperty $reflection
      */
-    protected function _setVisibilityFromReflection(ReflectionProperty $reflection) {
+    protected function _setVisibilityFromReflection(\ReflectionProperty $reflection) {
         if ($reflection->isPublic()) {
             $this->setVisibility('public');
         }
@@ -104,7 +106,7 @@ class CG_Property extends CG_Block {
         }
     }
 
-    protected function _setDocBlockFromReflection(ReflectionProperty $reflection) {
+    protected function _setDocBlockFromReflection(\ReflectionProperty $reflection) {
         $docBlock = $reflection->getDocComment();
         if ($docBlock) {
             $docBlock = preg_replace('/([\n\r])(' . self::$_indentation . ')+/', '$1', $docBlock);
@@ -113,9 +115,9 @@ class CG_Property extends CG_Block {
     }
 
     /**
-     * @param ReflectionProperty $reflection
+     * @param \ReflectionProperty $reflection
      */
-    protected function _setDefaultValueFromReflection(ReflectionProperty $reflection) {
+    protected function _setDefaultValueFromReflection(\ReflectionProperty $reflection) {
         $defaultProperties = $reflection->getDeclaringClass()->getDefaultProperties();
         $value = $defaultProperties[$this->getName()];
         if (null !== $value) {
@@ -124,10 +126,10 @@ class CG_Property extends CG_Block {
     }
 
     /**
-     * @param ReflectionProperty $reflection
-     * @return CG_Property
+     * @param \ReflectionProperty $reflection
+     * @return PropertyBlock
      */
-    public static function buildFromReflection(ReflectionProperty $reflection) {
+    public static function buildFromReflection(\ReflectionProperty $reflection) {
         $property = new self($reflection->getName());
         $property->extractFromReflection($reflection);
         // $property->setDefaultValue($reflection->getValue());

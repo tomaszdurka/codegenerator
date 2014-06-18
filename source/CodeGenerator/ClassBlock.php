@@ -1,6 +1,8 @@
 <?php
 
-class CG_Class extends CG_Block {
+namespace CodeGenerator;
+
+class ClassBlock extends Block {
 
     /** @var string */
     private $_name;
@@ -17,13 +19,13 @@ class CG_Class extends CG_Block {
     /** @var string[] */
     private $_uses = array();
 
-    /** @var CG_Constant[] */
+    /** @var ConstantBlock[] */
     private $_constants = array();
 
-    /** @var CG_Property[] */
+    /** @var PropertyBlock[] */
     private $_properties = array();
 
-    /** @var CG_Method[] */
+    /** @var MethodBlock[] */
     private $_methods = array();
 
     /** @var boolean */
@@ -89,23 +91,23 @@ class CG_Class extends CG_Block {
     }
 
     /**
-     * @param CG_Constant $constant
+     * @param ConstantBlock $constant
      */
-    public function addConstant(CG_Constant $constant) {
+    public function addConstant(ConstantBlock $constant) {
         $this->_constants[$constant->getName()] = $constant;
     }
 
     /**
-     * @param CG_Property $property
+     * @param PropertyBlock $property
      */
-    public function addProperty(CG_Property $property) {
+    public function addProperty(PropertyBlock $property) {
         $this->_properties[$property->getName()] = $property;
     }
 
     /**
-     * @param CG_Method $method
+     * @param MethodBlock $method
      */
-    public function addMethod(CG_Method $method) {
+    public function addMethod(MethodBlock $method) {
         $this->_methods[$method->getName()] = $method;
     }
 
@@ -171,7 +173,7 @@ class CG_Class extends CG_Block {
      * @return string[]
      */
     private function _getInterfaces() {
-        return array_map(array('self', '_normalizeClassName'), $this->_interfaces);
+        return array_map(array('\\CodeGenerator\\ClassBlock', '_normalizeClassName'), $this->_interfaces);
     }
 
     /**
@@ -188,7 +190,7 @@ class CG_Class extends CG_Block {
         return '}';
     }
 
-    public static function buildFromReflection(ReflectionClass $reflection) {
+    public static function buildFromReflection(\ReflectionClass $reflection) {
         $class = new self($reflection->getShortName());
         $class->setNamespace($reflection->getNamespaceName());
         $reflectionParentClass = $reflection->getParentClass();
@@ -205,19 +207,19 @@ class CG_Class extends CG_Block {
         }
         foreach ($reflection->getMethods() as $reflectionMethod) {
             if ($reflectionMethod->getDeclaringClass() == $reflection) {
-                $method = CG_Method::buildFromReflection($reflectionMethod);
+                $method = MethodBlock::buildFromReflection($reflectionMethod);
                 $class->addMethod($method);
             }
         }
         foreach ($reflection->getProperties() as $reflectionProperty) {
             if ($reflectionProperty->getDeclaringClass() == $reflection) {
-                $property = CG_Property::buildFromReflection($reflectionProperty);
+                $property = PropertyBlock::buildFromReflection($reflectionProperty);
                 $class->addProperty($property);
             }
         }
         foreach ($reflection->getConstants() as $name => $value) {
             if (!$reflection->getParentClass()->hasConstant($name)) {
-                $class->addConstant(new CG_Constant($name, $value));
+                $class->addConstant(new ConstantBlock($name, $value));
             }
         }
         return $class;

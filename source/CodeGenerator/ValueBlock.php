@@ -1,6 +1,8 @@
 <?php
 
-class CG_Value extends CG_Block {
+namespace CodeGenerator;
+
+class ValueBlock extends Block {
 
     /** @var mixed */
     private $_value;
@@ -17,7 +19,7 @@ class CG_Value extends CG_Block {
      */
     public function dump() {
         if (is_array($this->_value)) {
-            $array = new CG_Array($this->_value);
+            $array = new ArrayBlock($this->_value);
             return $array->dump();
         }
         return var_export($this->_value, true);

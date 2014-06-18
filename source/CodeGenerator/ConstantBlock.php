@@ -1,6 +1,8 @@
 <?php
 
-class CG_Constant extends CG_Block {
+namespace CodeGenerator;
+
+class ConstantBlock extends Block {
 
     /** @var string */
     private $_name;

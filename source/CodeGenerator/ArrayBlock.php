@@ -1,6 +1,8 @@
 <?php
 
-class CG_Array extends CG_Block {
+namespace CodeGenerator;
+
+class ArrayBlock extends Block {
 
     /** @var array */
     private $_value;
@@ -23,7 +25,7 @@ class CG_Array extends CG_Block {
             if ($isAssociative) {
                 $line .= $key . ' => ';
             }
-            $value = new CG_Value($value);
+            $value = new ValueBlock($value);
             $line .= $value->dump();
             $entries[] = $line;
         }
