@@ -4,6 +4,7 @@ namespace TestsCodeGenerator;
 
 use CodeGenerator\CG_Block;
 use CodeGenerator\CG_File;
+use CodeGeneratorHelpers\TestHelper;
 
 class CG_BlockTest extends \PHPUnit_Framework_TestCase {
 

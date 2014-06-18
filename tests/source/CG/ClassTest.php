@@ -8,7 +8,7 @@ use CodeGenerator\CG_File;
 class CG_ClassTest extends \PHPUnit_Framework_TestCase {
 
     public function testDump() {
-        $classes = array('CGMocks\\MockAbstractClass', 'CGMocks\\MockClass');
+        $classes = array('CodeGeneratorMocks\\MockAbstractClass', 'CodeGeneratorMocks\\MockClass');
         foreach ($classes as $className) {
             $file = new CG_File();
 
