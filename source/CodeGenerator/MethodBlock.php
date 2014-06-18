@@ -2,7 +2,7 @@
 
 namespace CodeGenerator;
 
-class CG_Method extends CG_Function {
+class MethodBlock extends FunctionBlock {
 
     /** @var string */
     private $_visibility;
@@ -109,7 +109,7 @@ class CG_Method extends CG_Function {
 
     /**
      * @param \ReflectionMethod $reflection
-     * @return self
+     * @return MethodBlock
      */
     public static function buildFromReflection(\ReflectionMethod $reflection) {
         $method = new self($reflection->getName());

@@ -2,7 +2,7 @@
 
 namespace CodeGenerator;
 
-class CG_Parameter extends CG_Block {
+class ParameterBlock extends Block {
 
     /** @var string */
     private $_name;
@@ -72,7 +72,7 @@ class CG_Parameter extends CG_Block {
         if (null === $this->_defaultValue) {
             return 'null';
         }
-        $value = new CG_Value($this->_defaultValue);
+        $value = new ValueBlock($this->_defaultValue);
         return $value->dump();
     }
 
@@ -89,7 +89,7 @@ class CG_Parameter extends CG_Block {
 
     /**
      * @param \ReflectionParameter $reflection
-     * @return self
+     * @return ParameterBlock
      */
     public static function buildFromReflection(\ReflectionParameter $reflection) {
         $type = null;

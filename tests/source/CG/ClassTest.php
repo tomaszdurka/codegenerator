@@ -2,18 +2,18 @@
 
 namespace TestsCodeGenerator;
 
-use CodeGenerator\CG_Class;
-use CodeGenerator\CG_File;
+use CodeGenerator\ClassBlock;
+use CodeGenerator\FileBlock;
 
 class CG_ClassTest extends \PHPUnit_Framework_TestCase {
 
     public function testDump() {
         $classes = array('CodeGeneratorMocks\\MockAbstractClass', 'CodeGeneratorMocks\\MockClass');
         foreach ($classes as $className) {
-            $file = new CG_File();
+            $file = new FileBlock();
 
             $reflectionClass = new \ReflectionClass($className);
-            $reflectedClass = CG_Class::buildFromReflection($reflectionClass);
+            $reflectedClass = ClassBlock::buildFromReflection($reflectionClass);
             $file->addBlock($reflectedClass);
 
             $actual = $file->dump();
@@ -24,7 +24,7 @@ class CG_ClassTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetName() {
         $className = 'Foo';
-        $class = new CG_Class($className, 'Bar', array('Countable'));
+        $class = new ClassBlock($className, 'Bar', array('Countable'));
         $this->assertSame($className, $class->getName());
     }
 }

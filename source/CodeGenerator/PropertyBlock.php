@@ -2,7 +2,7 @@
 
 namespace CodeGenerator;
 
-class CG_Property extends CG_Block {
+class PropertyBlock extends Block {
 
     /** @var string */
     private $_name;
@@ -84,7 +84,7 @@ class CG_Property extends CG_Block {
     protected function _dumpValue() {
         $content = $this->_visibility . ' $' . $this->_name;
         if (null !== $this->_defaultValue) {
-            $value = new CG_Value($this->_defaultValue);
+            $value = new ValueBlock($this->_defaultValue);
             $content .= ' = ' . $value->dump();
         }
         $content .= ';';
@@ -127,7 +127,7 @@ class CG_Property extends CG_Block {
 
     /**
      * @param \ReflectionProperty $reflection
-     * @return CG_Property
+     * @return PropertyBlock
      */
     public static function buildFromReflection(\ReflectionProperty $reflection) {
         $property = new self($reflection->getName());

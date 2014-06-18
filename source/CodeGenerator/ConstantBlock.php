@@ -2,7 +2,7 @@
 
 namespace CodeGenerator;
 
-class CG_Constant extends CG_Block {
+class ConstantBlock extends Block {
 
     /** @var string */
     private $_name;

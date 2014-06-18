@@ -2,7 +2,7 @@
 
 namespace CodeGenerator;
 
-abstract class CG_Block {
+abstract class Block {
 
     /** @var string */
     protected static $_indentation = '    ';

@@ -2,14 +2,14 @@
 
 namespace TestsCodeGenerator;
 
-use CodeGenerator\CG_Block;
-use CodeGenerator\CG_File;
+use CodeGenerator\Block;
+use CodeGenerator\FileBlock;
 use CodeGeneratorHelpers\TestHelper;
 
 class CG_BlockTest extends \PHPUnit_Framework_TestCase {
 
     public function testOutdent() {
-        $block = new CG_File();
+        $block = new FileBlock();
         $cases = array(
             "    foo"      => "foo",
             "foo"        => "foo",
@@ -23,7 +23,7 @@ class CG_BlockTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testOutdentUntilSafe() {
-        $block = new CG_File();
+        $block = new FileBlock();
         $cases = array(
             "    foo\nbar"     => "    foo\nbar",
             "        foo\n    bar" => "    foo\nbar",
@@ -36,7 +36,7 @@ class CG_BlockTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testIndent() {
-        $block = new CG_File();
+        $block = new FileBlock();
         $cases = array(
             "foo\nbar"     => "    foo\n    bar",
             "    foo\n    bar" => "        foo\n        bar",
@@ -48,14 +48,14 @@ class CG_BlockTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testSetIndentation() {
-        CG_Block::setIndentation('  ');
-        $block = new CG_File();
+        Block::setIndentation('  ');
+        $block = new FileBlock();
 
         $output = TestHelper::invokeMethod($block, '_indent', array("foo", true));
         $this->assertSame("  foo", $output);
         $output = TestHelper::invokeMethod($block, '_outdent', array("  foo\n    bar", true));
         $this->assertSame("foo\n  bar", $output);
 
-        CG_Block::setIndentation('    ');
+        Block::setIndentation('    ');
     }
 }
