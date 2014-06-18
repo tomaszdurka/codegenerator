@@ -1,38 +1,41 @@
 <?php
+
+namespace CodeGenerator;
+
 require 'vendor/autoload.php';
 
-$file = new CG_File();
+$file = new FileBlock();
 
-$closureFunction = new CG_Function(function ($bar = null) {
+$closureFunction = new FunctionBlock(function ($bar = null) {
     return 'foo';
 });
 $file->addBlock($closureFunction);
 
-$function = new CG_Function('return true;');
+$function = new FunctionBlock('return true;');
 $file->addBlock($function);
 
-$method = new CG_Method('_bar');
+$method = new MethodBlock('_bar');
 $method->setVisibility('private');
-$method->addParameter(new CG_Parameter('foo'));
-$method->addParameter(new CG_Parameter('bar'));
-$method->addParameter(new CG_Parameter('zoo'));
+$method->addParameter(new ParameterBlock('foo'));
+$method->addParameter(new ParameterBlock('bar'));
+$method->addParameter(new ParameterBlock('zoo'));
 
-$property = new CG_Property('foo');
+$property = new PropertyBlock('foo');
 $property->setDefaultValue('foo');
 
-$constant = new CG_Constant('FOO', 1);
+$constant = new ConstantBlock('FOO', 1);
 
-$class = new CG_Class('Foo');
+$class = new ClassBlock('Foo');
 $class->addMethod($method);
 $class->addProperty($property);
 $class->addConstant($constant);
 $file->addBlock($class);
 
-$childClass = new CG_Class('Bar', 'Foo');
+$childClass = new ClassBlock('Bar', 'Foo');
 $file->addBlock($childClass);
 
-$reflectionClass = new ReflectionClass('CG_Function');
-$reflectedClass = CG_Class::buildFromReflection($reflectionClass);
+$reflectionClass = new \ReflectionClass('\\CodeGenerator\\FunctionBlock');
+$reflectedClass = ClassBlock::buildFromReflection($reflectionClass);
 $file->addBlock($reflectedClass);
 
 echo $file->dump();
