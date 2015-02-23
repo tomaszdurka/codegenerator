@@ -100,7 +100,7 @@ class ParameterBlock extends Block {
             $type = $reflection->getClass()->getName();
         }
         $defaultValue = null;
-        if ($reflection->isOptional()) {
+        if ($reflection->isDefaultValueAvailable()) {
             $defaultValue = $reflection->getDefaultValue();
         }
         return new self($reflection->getName(), $type, $reflection->isOptional(), $defaultValue, $reflection->isPassedByReference());
