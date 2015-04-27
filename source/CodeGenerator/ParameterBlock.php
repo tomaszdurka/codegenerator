@@ -81,7 +81,7 @@ class ParameterBlock extends Block {
      */
     protected function _getType() {
         $type = $this->_type;
-        if (null !== $type && 'array' !== $type) {
+        if (!in_array($type, [null, 'array', 'callable'], true)) {
             $type = self::_normalizeClassName($type);
         }
         return $type;
@@ -93,6 +93,9 @@ class ParameterBlock extends Block {
      */
     public static function buildFromReflection(\ReflectionParameter $reflection) {
         $type = null;
+        if ($reflection->isCallable()) {
+            $type = 'callable';
+        }
         if ($reflection->isArray()) {
             $type = 'array';
         }

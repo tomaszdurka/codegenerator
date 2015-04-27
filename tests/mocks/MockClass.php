@@ -21,7 +21,7 @@ class MockClass extends \CodeGeneratorMocks\MockAbstractClass {
         return count($this->foo);
     }
 
-    public function withTypeHinting(\Countable $countable, array $array) {
+    public function withTypeHinting(\Countable $countable, array $array, callable $callable) {
     }
 
     public function defaultValues($defaultValue = null, $defaultArray = array()) {
