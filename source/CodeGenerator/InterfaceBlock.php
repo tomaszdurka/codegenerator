@@ -11,13 +11,13 @@ class InterfaceBlock extends Block
     private $_namespace;
 
     /** @var array */
-    private $_parentInterfaceNames = [];
+    private $_parentInterfaceNames = array();
 
     /** @var ConstantBlock[] */
-    private $_constants = [];
+    private $_constants = array();
 
     /** @var MethodBlock[] */
-    private $_methods = [];
+    private $_methods = array();
 
     /**
      * @param $name
@@ -61,7 +61,7 @@ class InterfaceBlock extends Block
         $reflectionParentInterfaces = $reflection->getInterfaces();
 
         if (!empty($reflectionParentInterfaces)) {
-            $interfaces = [];
+            $interfaces = array();
             foreach ($reflectionParentInterfaces as $reflectionParentInterface) {
                 $interfaces[] = $reflectionParentInterface->getName();
             }
@@ -118,7 +118,7 @@ class InterfaceBlock extends Block
      */
     protected static function getAllConstantsOfParentInterfaces(\ReflectionClass $reflection)
     {
-        $parentConstants = [];
+        $parentConstants = array();
         $parentInterfaces = $reflection->getInterfaces();
         foreach ($parentInterfaces as $parentInterface) {
             $parentInterfaceConstants = $parentInterface->getConstants();
@@ -142,7 +142,7 @@ class InterfaceBlock extends Block
      */
     public function dump()
     {
-        $lines = [];
+        $lines = array();
         $lines[] = $this->_dumpHeader();
         foreach ($this->_constants as $constant) {
             $lines[] = '';
@@ -162,7 +162,7 @@ class InterfaceBlock extends Block
      */
     private function _dumpHeader()
     {
-        $lines = [];
+        $lines = array();
         if ($this->_namespace) {
             $lines[] = 'namespace ' . $this->_namespace . ';';
             $lines[] = '';
@@ -183,7 +183,7 @@ class InterfaceBlock extends Block
      */
     private function _getParentInterfaces()
     {
-        $cleaned = [];
+        $cleaned = array();
         foreach ($this->_parentInterfaceNames as $parentInterfaceName) {
             $cleaned[] = self::_normalizeClassName($parentInterfaceName);
         }
