@@ -26,6 +26,7 @@ class ParameterBlock extends Block {
      * @param mixed|null   $defaultValue
      * @param boolean|null $passedByReference
      * @throws \Exception
+     * @internal param bool|null $isOptional
      */
     public function __construct($name, $type = null, $optional = null, $defaultValue = null, $passedByReference = null) {
         $this->_name = (string) $name;
