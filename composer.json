@@ -1,21 +1,21 @@
 {
-    "name": "tomaszdurka/codegenerator",
-    "authors": [
-        {
-            "name": "Tomasz Durka",
-            "email": "tomasz@durka.pl"
-        }
-    ],
-    "require": {
-        "php": ">=5.4"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "~3.7.10",
-        "satooshi/php-coveralls": "~0.6.1"
-    },
-    "autoload": {
-        "psr-0": {
-            "CodeGenerator\\": "source/"
-        }
+  "name": "tomaszdurka/codegenerator",
+  "authors": [
+    {
+      "name": "Tomasz Durka",
+      "email": "tomasz@durka.pl"
     }
+  ],
+  "require": {
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~3.7.10",
+    "satooshi/php-coveralls": "~0.6.1"
+  },
+  "autoload": {
+    "psr-0": {
+      "CodeGenerator\\": "source/"
+    }
+  }
 }
