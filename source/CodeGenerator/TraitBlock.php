@@ -11,7 +11,7 @@ class TraitBlock extends Block {
     private $_aliases = [];
 
     /**
-     * @param string     $name
+     * @param string $name
      */
     public function __construct($name) {
         $this->_name = (string) $name;
