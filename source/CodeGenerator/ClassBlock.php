@@ -16,7 +16,7 @@ class ClassBlock extends Block {
     /** @var string[] */
     private $_interfaces;
 
-    /** @var string[] */
+    /** @var TraitBlock[] */
     private $_uses = array();
 
     /** @var ConstantBlock[] */
@@ -84,10 +84,10 @@ class ClassBlock extends Block {
     }
 
     /**
-     * @param string $name
+     * @param TraitBlock $trait
      */
-    public function addUse($name) {
-        $this->_uses[] = $name;
+    public function addUse(TraitBlock $trait) {
+        $this->_uses[$trait->getName()] = $trait;
     }
 
     /**
@@ -124,9 +124,9 @@ class ClassBlock extends Block {
     public function dump() {
         $lines = array();
         $lines[] = $this->_dumpHeader();
-        foreach ($this->_uses as $use) {
+        foreach ($this->_uses as $trait) {
             $lines[] = '';
-            $lines[] = $this->_indent("use ${use};");
+            $lines[] = $this->_indent($trait->dump());
         }
         foreach ($this->_constants as $constant) {
             $lines[] = '';
