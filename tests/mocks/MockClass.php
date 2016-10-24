@@ -27,6 +27,12 @@ class MockClass extends \CodeGeneratorMocks\MockAbstractClass {
     public function defaultValues($defaultValue = null, $defaultArray = array()) {
     }
 
+    public function defaultValueMandatoryArgument($defaultValue = true, $mandatoryArgument) {
+    }
+
+    public function nullableMandatoryArgument($nullableValue = null, $mandatoryArgument) {
+    }
+
     public function withReferenceParam(&$param) {
     }
 
