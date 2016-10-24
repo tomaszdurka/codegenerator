@@ -14,5 +14,11 @@
     "psr-0": {
       "CodeGenerator\\": "source/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CodeGeneratorHelpers\\":  "tests/helpers",
+      "CodeGeneratorMocks\\": "tests/mocks"
+    }
   }
 }
