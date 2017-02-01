@@ -19,16 +19,19 @@ class ParameterBlock extends Block {
     /** @var boolean */
     private $_passedByReference;
 
+    /** @var boolean */
+    private $_variadic;
+
     /**
      * @param string       $name
      * @param string|null  $type
-     * @param null         $optional
+     * @param boolean|null $optional
      * @param mixed|null   $defaultValue
      * @param boolean|null $passedByReference
+     * @param boolean|null $variadic
      * @throws \Exception
-     * @internal param bool|null $isOptional
      */
-    public function __construct($name, $type = null, $optional = null, $defaultValue = null, $passedByReference = null) {
+    public function __construct($name, $type = null, $optional = null, $defaultValue = null, $passedByReference = null, $variadic = null) {
         $this->_name = (string) $name;
         if (null !== $type) {
             $this->_type = (string) $type;
@@ -41,6 +44,7 @@ class ParameterBlock extends Block {
             $this->_defaultValue = $defaultValue;
         }
         $this->_passedByReference = (bool) $passedByReference;
+        $this->_variadic = (bool) $variadic;
     }
 
     /**
@@ -58,11 +62,14 @@ class ParameterBlock extends Block {
         if ($this->_type) {
             $content .= $this->_getType() . ' ';
         }
+        if ($this->_variadic) {
+            $content .= '...';
+        }
         if ($this->_passedByReference) {
             $content .= '&';
         }
         $content .= '$' . $this->_name;
-        if ($this->_optional) {
+        if ($this->_optional && !$this->_variadic) {
             $content .= ' = ' . $this->_dumpDefaultValue();
         }
         return $content;
@@ -106,6 +113,6 @@ class ParameterBlock extends Block {
         if ($reflection->isDefaultValueAvailable()) {
             $defaultValue = $reflection->getDefaultValue();
         }
-        return new self($reflection->getName(), $type, $reflection->isOptional(), $defaultValue, $reflection->isPassedByReference());
+        return new self($reflection->getName(), $type, $reflection->isOptional(), $defaultValue, $reflection->isPassedByReference(), $reflection->isVariadic());
     }
 }
