@@ -9,6 +9,9 @@ class MockClass extends \CodeGeneratorMocks\MockAbstractClass {
     /** @var array */
     public $foo = array(1, 2);
 
+    /** @var array  */
+    public static $bar = array(1, 2);
+
     /** @var int */
     protected $_bar = 1;
 
