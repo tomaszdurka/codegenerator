@@ -32,15 +32,19 @@ class ParameterBlock extends Block {
      * @throws \Exception
      */
     public function __construct($name, $type = null, $defaultValueAvailable = null, $defaultValue = null, $passedByReference = null, $variadic = null) {
+        if (!$defaultValueAvailable && null !== $defaultValue) {
+            throw new \Exception('Cannot set default value for parameter without default value available');
+        }
+        if ($this->_defaultValueAvailable && $variadic) {
+            throw new \Exception('Cannot set default value for variadic parameters');
+        }
+
         $this->_name = (string) $name;
         if (null !== $type) {
             $this->_type = (string) $type;
         }
         $this->_defaultValueAvailable = (bool) $defaultValueAvailable;
-        if (null !== $defaultValue) {
-            if (!$this->_defaultValueAvailable) {
-                throw new \Exception('Cannot set default value for non-optional parameter');
-            }
+        if ($this->_defaultValueAvailable) {
             $this->_defaultValue = $defaultValue;
         }
         $this->_passedByReference = (bool) $passedByReference;
