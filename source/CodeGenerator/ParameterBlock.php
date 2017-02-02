@@ -2,6 +2,8 @@
 
 namespace CodeGenerator;
 
+use CodeGenerator\Exception\Exception;
+
 class ParameterBlock extends Block {
 
     /** @var string */
@@ -29,14 +31,14 @@ class ParameterBlock extends Block {
      * @param mixed|null   $defaultValue
      * @param boolean|null $passedByReference
      * @param boolean|null $variadic
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct($name, $type = null, $defaultValueAvailable = null, $defaultValue = null, $passedByReference = null, $variadic = null) {
         if (!$defaultValueAvailable && null !== $defaultValue) {
-            throw new \Exception('Cannot set default value for parameter without default value available');
+            throw new Exception('Cannot set default value for parameter without default value available');
         }
         if ($this->_defaultValueAvailable && $variadic) {
-            throw new \Exception('Cannot set default value for variadic parameters');
+            throw new Exception('Cannot set default value for variadic parameters');
         }
 
         $this->_name = (string) $name;
