@@ -16,7 +16,7 @@ class ParameterBlock extends Block {
     private $_defaultValue;
 
     /** @var boolean */
-    private $_defaultValueAvailable;
+    private $_optional;
 
     /** @var boolean */
     private $_passedByReference;
@@ -24,24 +24,20 @@ class ParameterBlock extends Block {
     /** @var boolean */
     private $_variadic;
 
-    /** @var boolean */
-    private $_optional;
-
     /**
      * @param string       $name
      * @param string|null  $type
-     * @param bool|null    $defaultValueAvailable
+     * @param bool|null    $optional
      * @param mixed|null   $defaultValue
      * @param boolean|null $passedByReference
      * @param boolean|null $variadic
-     * @param boolean|null $optional
      * @throws Exception
      */
-    public function __construct($name, $type = null, $defaultValueAvailable = null, $defaultValue = null, $passedByReference = null, $variadic = null, $optional = null) {
-        if (!$defaultValueAvailable && null !== $defaultValue) {
-            throw new Exception('Cannot set default value for parameter without default value available');
+    public function __construct($name, $type = null, $optional = null, $defaultValue = null, $passedByReference = null, $variadic = null) {
+        if (!$optional && null !== $defaultValue) {
+            throw new Exception('Cannot set default value for non-optional parameter');
         }
-        if ($this->_defaultValueAvailable && $variadic) {
+        if ($variadic && null !== $this->_defaultValue) {
             throw new Exception('Cannot set default value for variadic parameters');
         }
 
@@ -49,13 +45,12 @@ class ParameterBlock extends Block {
         if (null !== $type) {
             $this->_type = (string) $type;
         }
-        $this->_defaultValueAvailable = (bool) $defaultValueAvailable;
-        if ($this->_defaultValueAvailable) {
+        $this->_optional = (bool) $optional;
+        if ($this->_optional) {
             $this->_defaultValue = $defaultValue;
         }
         $this->_passedByReference = (bool) $passedByReference;
         $this->_variadic = (bool) $variadic;
-        $this->_optional = (bool) $optional;
     }
 
     /**
@@ -80,10 +75,8 @@ class ParameterBlock extends Block {
             $content .= '&';
         }
         $content .= '$' . $this->_name;
-        if ($this->_defaultValueAvailable) {
+        if ($this->_optional && !$this->_variadic) {
             $content .= ' = ' . $this->_dumpDefaultValue();
-        } elseif ($this->_optional && !$this->_variadic) {
-            $content .= ' = null';
         }
         return $content;
     }
@@ -126,6 +119,7 @@ class ParameterBlock extends Block {
         if ($reflection->isDefaultValueAvailable()) {
             $defaultValue = $reflection->getDefaultValue();
         }
-        return new self($reflection->getName(), $type, $reflection->isDefaultValueAvailable(), $defaultValue, $reflection->isPassedByReference(), $reflection->isVariadic(), $reflection->isOptional());
+        $optional = $reflection->isOptional() || $reflection->isDefaultValueAvailable();
+        return new self($reflection->getName(), $type, $optional, $defaultValue, $reflection->isPassedByReference(), $reflection->isVariadic());
     }
 }
