@@ -2,6 +2,8 @@
 
 namespace CodeGenerator;
 
+use CodeGenerator\Exception\Exception;
+
 class FunctionBlock extends Block {
 
     /** @var string|null */
@@ -45,11 +47,11 @@ class FunctionBlock extends Block {
 
     /**
      * @param ParameterBlock $parameter
-     * @throws \Exception
+     * @throws Exception
      */
     public function addParameter(ParameterBlock $parameter) {
         if (array_key_exists($parameter->getName(), $this->_parameters)) {
-            throw new \Exception('Parameter `' . $parameter->getName() . '` is already set.');
+            throw new Exception('Parameter `' . $parameter->getName() . '` is already set.');
         }
         $this->_parameters[$parameter->getName()] = $parameter;
     }
