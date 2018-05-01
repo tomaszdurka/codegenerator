@@ -61,12 +61,19 @@ class ParameterBlock extends Block {
     }
 
     /**
+     * @return bool
+     */
+    public function isOptional() {
+        return $this->_optional;
+    }
+
+    /**
      * @return string
      */
     public function dump() {
         $content = '';
         if ($this->_type) {
-            $content .= $this->_getType() . ' ';
+            $content .= $this->getType() . ' ';
         }
         if ($this->_variadic) {
             $content .= '...';
@@ -92,7 +99,7 @@ class ParameterBlock extends Block {
     /**
      * @return null|string
      */
-    protected function _getType() {
+    public function getType() {
         $type = $this->_type;
         if (!in_array($type, [null, 'array', 'callable'], true)) {
             $type = self::_normalizeClassName($type);
@@ -120,6 +127,7 @@ class ParameterBlock extends Block {
             $defaultValue = $reflection->getDefaultValue();
         }
         $optional = $reflection->isOptional() || $reflection->isDefaultValueAvailable();
-        return new self($reflection->getName(), $type, $optional, $defaultValue, $reflection->isPassedByReference(), $reflection->isVariadic());
+        $isVariadic = method_exists($reflection, 'isVariadic') && $reflection->isVariadic();
+        return new self($reflection->getName(), $type, $optional, $defaultValue, $reflection->isPassedByReference(), $isVariadic);
     }
 }

@@ -15,13 +15,17 @@ class FunctionBlock extends Block {
     /** @var string */
     protected $_code;
 
-    /** @var string|null */
+    /** @var DocBlock|string|null */
     protected $_docBlock;
+
+    /** @var string */
+    protected $_returnType;
 
     /**
      * @param callable|string|null $body
      */
     public function __construct($body = null) {
+        $this->useDynamicDocBlock();
         if (null !== $body) {
             if ($body instanceof \Closure) {
                 $this->extractFromClosure($body);
@@ -57,6 +61,13 @@ class FunctionBlock extends Block {
     }
 
     /**
+     * @return ParameterBlock[]
+     */
+    public function getParameters() {
+        return $this->_parameters;
+    }
+
+    /**
      * @param string $code
      */
     public function setCode($code) {
@@ -67,13 +78,35 @@ class FunctionBlock extends Block {
     }
 
     /**
-     * @param string|null $docBlock
+     * @param DocBlock|string|null $docBlock
      */
     public function setDocBlock($docBlock) {
-        if (null !== $docBlock) {
-            $docBlock = (string) $docBlock;
-        }
         $this->_docBlock = $docBlock;
+    }
+
+    public function useDynamicDocBlock() {
+        $this->setDocBlock(new DynamicFunctionDocBlock($this));
+    }
+
+    /**
+     * @return DocBlock|null|string
+     */
+    public function getDocBlock() {
+        return $this->_docBlock;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnType() {
+        return $this->_returnType;
+    }
+
+    /**
+     * @param string $returnType
+     */
+    public function setReturnType($returnType) {
+        $this->_returnType = $returnType;
     }
 
     /**
@@ -127,6 +160,8 @@ class FunctionBlock extends Block {
         if ($docBlock) {
             $docBlock = preg_replace('/([\n\r])(' . self::$_indentation . ')+/', '$1', $docBlock);
             $this->setDocBlock($docBlock);
+        } else {
+            $this->setDocBlock(null);
         }
     }
 
@@ -138,10 +173,13 @@ class FunctionBlock extends Block {
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function _dumpDocBlock() {
-        return $this->_docBlock;
+        if (null === $this->_docBlock) {
+            return null;
+        }
+        return (string) $this->_docBlock;
     }
 
     /**

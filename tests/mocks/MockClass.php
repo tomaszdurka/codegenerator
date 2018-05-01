@@ -39,9 +39,6 @@ class MockClass extends \CodeGeneratorMocks\MockAbstractClass {
     public function withReferenceParam(&$param) {
     }
 
-    public function withVariadicParam($param, ...$variadic) {
-    }
-
     protected function abstractMethod() {
     }
 
