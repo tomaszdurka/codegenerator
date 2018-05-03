@@ -45,9 +45,8 @@ class PropertyBlock extends Block {
     /**
      * @param boolean $static
      */
-    public function setStatic($static)
-    {
-        $this->_static = (bool)$static;
+    public function setStatic($static) {
+        $this->_static = (bool) $static;
     }
 
     /**
@@ -58,12 +57,9 @@ class PropertyBlock extends Block {
     }
 
     /**
-     * @param string|null $docBlock
+     * @param DocBlock|string|null $docBlock
      */
     public function setDocBlock($docBlock) {
-        if (null !== $docBlock) {
-            $docBlock = (string) $docBlock;
-        }
         $this->_docBlock = $docBlock;
     }
 
@@ -85,10 +81,13 @@ class PropertyBlock extends Block {
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     protected function _dumpDocBlock() {
-        return $this->_docBlock;
+        if (null === $this->_docBlock) {
+            return null;
+        }
+        return (string) $this->_docBlock;
     }
 
     /**

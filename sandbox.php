@@ -19,8 +19,10 @@ $method->setVisibility('private');
 $method->addParameter(new ParameterBlock('foo'));
 $method->addParameter(new ParameterBlock('bar'));
 $method->addParameter(new ParameterBlock('zoo'));
+$method->setReturnType('string');
 
 $property = new PropertyBlock('foo');
+$property->setDocBlock(new PropertyDocBlock('string'));
 $property->setDefaultValue('foo');
 
 $constant = new ConstantBlock('FOO', 1);

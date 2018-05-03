@@ -6,10 +6,9 @@ use CodeGenerator\ConstantBlock;
 use CodeGenerator\FileBlock;
 use CodeGenerator\InterfaceBlock;
 
-class CG_InterfaceTest extends \PHPUnit_Framework_TestCase
-{
-    public function testDump()
-    {
+class CG_InterfaceTest extends \PHPUnit_Framework_TestCase {
+
+    public function testDump() {
         $file = new FileBlock();
 
         $reflectionClass = new \ReflectionClass('CodeGeneratorMocks\\MockInterface');
@@ -21,8 +20,7 @@ class CG_InterfaceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function testDumpSmall()
-    {
+    public function testDumpSmall() {
         $file = new FileBlock();
 
         $reflectionClass = new \ReflectionClass('CodeGeneratorMocks\\MockInterfaceTwo');
@@ -34,8 +32,7 @@ class CG_InterfaceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function testDumpExtract()
-    {
+    public function testDumpExtract() {
         $expected = <<<TEST
 <?php
 
@@ -62,8 +59,7 @@ TEST;
         $this->assertSame($expected, $actual);
     }
 
-    public function testGetName()
-    {
+    public function testGetName() {
         $className = 'Foo';
         $class = new InterfaceBlock($className, ['Bar']);
         $this->assertSame($className, $class->getName());
